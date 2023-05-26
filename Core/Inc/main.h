@@ -67,6 +67,8 @@ void MX_I2C4_Init(void);
 #define VSYNC_FREQ_GPIO_Port GPIOC
 #define MCU_ACTIVE_Pin GPIO_PIN_6
 #define MCU_ACTIVE_GPIO_Port GPIOF
+#define CAN_CS_Pin GPIO_PIN_0
+#define CAN_CS_GPIO_Port GPIOB
 #define FRAME_RATE_Pin GPIO_PIN_1
 #define FRAME_RATE_GPIO_Port GPIOJ
 
