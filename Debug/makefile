@@ -12,6 +12,15 @@ RM := rm -rf
 -include Utilities/subdir.mk
 -include TouchGFX/target/generated/subdir.mk
 -include TouchGFX/target/subdir.mk
+-include TouchGFX/gui/src/screen_screen/subdir.mk
+-include TouchGFX/gui/src/model/subdir.mk
+-include TouchGFX/gui/src/common/subdir.mk
+-include TouchGFX/generated/texts/src/subdir.mk
+-include TouchGFX/generated/images/src/__generated/subdir.mk
+-include TouchGFX/generated/images/src/subdir.mk
+-include TouchGFX/generated/gui_generated/src/screen_screen/subdir.mk
+-include TouchGFX/generated/gui_generated/src/common/subdir.mk
+-include TouchGFX/generated/fonts/src/subdir.mk
 -include TouchGFX/App/subdir.mk
 -include Middlewares/LibJPEG/subdir.mk
 -include Middlewares/FreeRTOS/subdir.mk
@@ -82,8 +91,8 @@ all: main-build
 main-build: UOSM-Dashboard-MCU-F769NI.elf secondary-outputs
 
 # Tool invocations
-UOSM-Dashboard-MCU-F769NI.elf UOSM-Dashboard-MCU-F769NI.map: $(OBJS) $(USER_OBJS) /Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/STM32F769NIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "UOSM-Dashboard-MCU-F769NI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/STM32F769NIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UOSM-Dashboard-MCU-F769NI.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+UOSM-Dashboard-MCU-F769NI.elf UOSM-Dashboard-MCU-F769NI.map: $(OBJS) $(USER_OBJS) C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\STM32F769NIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "UOSM-Dashboard-MCU-F769NI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\STM32F769NIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UOSM-Dashboard-MCU-F769NI.map" -Wl,--gc-sections -static -L"C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

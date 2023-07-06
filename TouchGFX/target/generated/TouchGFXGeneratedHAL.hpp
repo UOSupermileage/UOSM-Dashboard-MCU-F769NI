@@ -156,6 +156,24 @@ public:
      *        Called when a rendering pass is completed.
      */
     virtual void endFrame();
+    /**
+     *
+     * @fn inline uint8_t* TouchGFXGeneratedHAL::advanceFrameBufferToRect(uint8_t* fbPtr, const touchgfx::Rect& rect) const;
+     *
+     * @brief This function calculates the offset in the framebuffer address according to "rect" coordinates.
+     *
+     *        This function is typically for users who need to transfer framebuffer data to
+     *        a display from within flushFrameBuffer(Rect& rect). While HAL::lockFrameBuffer()
+     *        returns a pointer to the current drawing framebuffer, users must manually calculate
+     *        the offset from that pointer to the Rect to transfer. This function will advance the offset
+     *        in the framebuffer equal to the rect's upper left corner (x, y).
+     *
+     *
+     * @param fbPtr Pointer to the start of the framebuffer, coordinates (0, 0)
+     * @param rect The area of the screen expressed in absolute coordinates, which has to be transformed to address.
+     *
+     */
+    inline uint8_t* advanceFrameBufferToRect(uint8_t* fbPtr, const touchgfx::Rect& rect) const;
 
 protected:
     /**
@@ -179,29 +197,6 @@ protected:
      * @param [in,out] adr New frame buffer address.
      */
     virtual void setTFTFrameBuffer(uint16_t* adr);
-
-    /**
-     * @fn virtual uint16_t TouchGFXGeneratedHAL::getTFTCurrentLine()
-     *
-     * @brief Get the current line (Y) of the TFT controller
-     *
-     *        This function is used to obtain the progress of the TFT controller. More
-     *        specifically, the line (or Y-value) currently being transferred.
-     *
-     *        Note: The value must be adjusted to account for vertical back porch before
-     *        returning, such that the value is always within the range of 0 &lt;= value &lt;
-     *        actual display height in pixels
-     *
-     *        It is used for the REFRESH_STRATEGY_OPTIM_SINGLE_BUFFER_TFT_CTRL frame refresh
-     *        strategy in order to synchronize frame buffer drawing with TFT controller
-     *        progress. If this strategy is used, the concrete HAL subclass must provide an
-     *        override of this function that returns correct line value. If this strategy is
-     *        not used, then the getTFTCurrentLine function is never called and can be
-     *        disregarded.
-     *
-     * @return In this default implementation, 0xFFFF is returned to signify "not implemented".
-     */
-    virtual uint16_t getTFTCurrentLine();
 
     virtual void InvalidateCache();
 
