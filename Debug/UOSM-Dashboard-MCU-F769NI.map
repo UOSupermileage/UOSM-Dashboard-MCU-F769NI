@@ -18876,6 +18876,8 @@ Memory Configuration
 Name             Origin             Length             Attributes
 RAM              0x0000000020000000 0x0000000000080000 xrw
 FLASH            0x0000000008000000 0x0000000000200000 xr
+QUADSPI          0x0000000090000000 0x0000000004000000 r
+SDRAM            0x00000000c0000000 0x0000000001000000 xrw
 *default*        0x0000000000000000 0xffffffffffffffff
 
 Linker script and memory map
@@ -19039,8 +19041,8 @@ END GROUP
 LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtend.o
 LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtn.o
                 0x0000000020080000                _estack = (ORIGIN (RAM) + LENGTH (RAM))
-                0x0000000000000200                _Min_Heap_Size = 0x200
-                0x0000000000000400                _Min_Stack_Size = 0x400
+                0x0000000000001000                _Min_Heap_Size = 0x1000
+                0x0000000000001000                _Min_Stack_Size = 0x1000
 
 .isr_vector     0x0000000008000000      0x1f8
                 0x0000000008000000                . = ALIGN (0x4)
@@ -22826,122 +22828,74 @@ LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000008027fe4                __sf_fake_stdout
                 0x0000000008028004                . = ALIGN (0x4)
 
-FontFlashSection
-                0x0000000008028004      0x1a6
- FontFlashSection
-                0x0000000008028004       0x18 ./TouchGFX/generated/fonts/src/Font_verdana_10_4bpp_0.o
-                0x0000000008028004                unicodes_verdana_10_4bpp_0
- FontFlashSection
-                0x000000000802801c       0x46 ./TouchGFX/generated/fonts/src/Font_verdana_20_4bpp_0.o
-                0x000000000802801c                unicodes_verdana_20_4bpp_0
- *fill*         0x0000000008028062        0x2 
- FontFlashSection
-                0x0000000008028064      0x117 ./TouchGFX/generated/fonts/src/Font_verdana_40_4bpp_0.o
-                0x0000000008028064                unicodes_verdana_40_4bpp_0
- *fill*         0x000000000802817b        0x1 
- FontFlashSection
-                0x000000000802817c        0xe ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
-                0x000000000802817c                glyphs_verdana_10_4bpp
- *fill*         0x000000000802818a        0x2 
- FontFlashSection
-                0x000000000802818c        0xe ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
-                0x000000000802818c                glyphs_verdana_20_4bpp
- *fill*         0x000000000802819a        0x2 
- FontFlashSection
-                0x000000000802819c        0xe ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
-                0x000000000802819c                glyphs_verdana_40_4bpp
-
 FontSearchFlashSection
-                0x00000000080281ac       0x18
+                0x0000000008028004       0x18
  FontSearchFlashSection
-                0x00000000080281ac        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_10_4bpp.o
-                0x00000000080281ac                kerning_verdana_10_4bpp
+                0x0000000008028004        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_10_4bpp.o
+                0x0000000008028004                kerning_verdana_10_4bpp
  FontSearchFlashSection
-                0x00000000080281b0        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_20_4bpp.o
-                0x00000000080281b0                kerning_verdana_20_4bpp
+                0x0000000008028008        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_20_4bpp.o
+                0x0000000008028008                kerning_verdana_20_4bpp
  FontSearchFlashSection
-                0x00000000080281b4        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_40_4bpp.o
-                0x00000000080281b4                kerning_verdana_40_4bpp
+                0x000000000802800c        0x4 ./TouchGFX/generated/fonts/src/Kerning_verdana_40_4bpp.o
+                0x000000000802800c                kerning_verdana_40_4bpp
  FontSearchFlashSection
-                0x00000000080281b8        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
-                0x00000000080281b8                unicodes_verdana_10_4bpp
+                0x0000000008028010        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
+                0x0000000008028010                unicodes_verdana_10_4bpp
  FontSearchFlashSection
-                0x00000000080281bc        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
-                0x00000000080281bc                unicodes_verdana_20_4bpp
+                0x0000000008028014        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
+                0x0000000008028014                unicodes_verdana_20_4bpp
  FontSearchFlashSection
-                0x00000000080281c0        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
-                0x00000000080281c0                unicodes_verdana_40_4bpp
+                0x0000000008028018        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
+                0x0000000008028018                unicodes_verdana_40_4bpp
 
-ExtFlashSection
-                0x00000000080281c4   0x177000
- ExtFlashSection
-                0x00000000080281c4   0x177000 ./TouchGFX/generated/images/src/__generated/image_alternate_theme_images_backgrounds_800x480_poly.o
-                0x00000000080281c4                image_alternate_theme_images_backgrounds_800x480_poly
-
-TextFlashSection
-                0x000000000819f1c4       0x10
- TextFlashSection
-                0x000000000819f1c4        0x4 ./TouchGFX/generated/texts/src/LanguageGb.o
-                0x000000000819f1c4                indicesGb
- TextFlashSection
-                0x000000000819f1c8        0x2 ./TouchGFX/generated/texts/src/Texts.o
-                0x000000000819f1c8                texts_all_languages
- *fill*         0x000000000819f1ca        0x2 
- TextFlashSection
-                0x000000000819f1cc        0x8 ./TouchGFX/generated/texts/src/TypedTextDatabase.o
-                0x000000000819f1cc                typedText_database_DEFAULT
-                0x000000000819f1d0                typedTextDatabaseArray
-
-.ARM.extab      0x000000000819f1d4        0x0
-                0x000000000819f1d4                . = ALIGN (0x4)
+.ARM.extab      0x000000000802801c        0x0
+                0x000000000802801c                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x000000000819f1d4                . = ALIGN (0x4)
+                0x000000000802801c                . = ALIGN (0x4)
 
-.ARM            0x000000000819f1d4        0x8
-                0x000000000819f1d4                . = ALIGN (0x4)
-                0x000000000819f1d4                __exidx_start = .
+.ARM            0x000000000802801c        0x8
+                0x000000000802801c                . = ALIGN (0x4)
+                0x000000000802801c                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x000000000819f1d4        0x8 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
-                0x000000000819f1dc                __exidx_end = .
-                0x000000000819f1dc                . = ALIGN (0x4)
+ .ARM.exidx     0x000000000802801c        0x8 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
+                0x0000000008028024                __exidx_end = .
+                0x0000000008028024                . = ALIGN (0x4)
 
-.rel.dyn        0x000000000819f1dc        0x0
- .rel.iplt      0x000000000819f1dc        0x0 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
-
-.preinit_array  0x000000000819f1dc        0x0
-                0x000000000819f1dc                . = ALIGN (0x4)
-                0x000000000819f1dc                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x0000000008028024        0x0
+                0x0000000008028024                . = ALIGN (0x4)
+                0x0000000008028024                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x000000000819f1dc                PROVIDE (__preinit_array_end = .)
-                0x000000000819f1dc                . = ALIGN (0x4)
+                0x0000000008028024                PROVIDE (__preinit_array_end = .)
+                0x0000000008028024                . = ALIGN (0x4)
 
-.init_array     0x000000000819f1dc       0x18
-                0x000000000819f1dc                . = ALIGN (0x4)
-                0x000000000819f1dc                PROVIDE (__init_array_start = .)
+.init_array     0x0000000008028024       0x18
+                0x0000000008028024                . = ALIGN (0x4)
+                0x0000000008028024                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x000000000819f1dc        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
- .init_array    0x000000000819f1e0        0x4 ./TouchGFX/generated/texts/src/TypedTextDatabase.o
- .init_array    0x000000000819f1e4        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
- .init_array    0x000000000819f1e8        0x4 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
- .init_array    0x000000000819f1ec        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD.o)
- .init_array    0x000000000819f1f0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000000819f1f4                PROVIDE (__init_array_end = .)
-                0x000000000819f1f4                . = ALIGN (0x4)
+ .init_array    0x0000000008028024        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+ .init_array    0x0000000008028028        0x4 ./TouchGFX/generated/texts/src/TypedTextDatabase.o
+ .init_array    0x000000000802802c        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+ .init_array    0x0000000008028030        0x4 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+ .init_array    0x0000000008028034        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD.o)
+ .init_array    0x0000000008028038        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x000000000802803c                PROVIDE (__init_array_end = .)
+                0x000000000802803c                . = ALIGN (0x4)
 
-.fini_array     0x000000000819f1f4        0xc
-                0x000000000819f1f4                . = ALIGN (0x4)
+.fini_array     0x000000000802803c        0xc
+                0x000000000802803c                . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x000000000819f1f4        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
- .fini_array    0x000000000819f1f8        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
- .fini_array    0x000000000819f1fc        0x4 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+ .fini_array    0x000000000802803c        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+ .fini_array    0x0000000008028040        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+ .fini_array    0x0000000008028044        0x4 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x000000000819f200                . = ALIGN (0x4)
-                0x000000000819f200                _sidata = LOADADDR (.data)
+                0x0000000008028048                . = ALIGN (0x4)
+                0x0000000008028048                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000      0x110 load address 0x000000000819f200
+.data           0x0000000020000000      0x110 load address 0x0000000008028048
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -23035,514 +22989,501 @@ TextFlashSection
  .data.__atexit_recursive_mutex
                 0x000000002000010c        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-__call_atexit.o)
                 0x000000002000010c                __atexit_recursive_mutex
- *(.RamFunc)
- *(.RamFunc*)
                 0x0000000020000110                . = ALIGN (0x4)
                 0x0000000020000110                _edata = .
 
-.igot.plt       0x0000000020000110        0x0 load address 0x000000000819f310
+.igot.plt       0x0000000020000110        0x0 load address 0x0000000008028158
  .igot.plt      0x0000000020000110        0x0 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
 
-CCMRAM          0x0000000020000110     0x9600 load address 0x000000000819f310
+CCMRAM          0x0000000020000110     0x9600 load address 0x0000000008028158
  CCMRAM         0x0000000020000110     0x9600 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
                 0x0000000020000110                MCU_Data_OutBuffer0
                 0x0000000020004c10                MCU_Data_OutBuffer1
+                0x0000000020009710                . = ALIGN (0x4)
 
-Video_RGB_Buffer
-                0x0000000020009710    0xbb800 load address 0x00000000081a8910
- Video_RGB_Buffer
-                0x0000000020009710    0xbb800 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
-                0x0000000020009710                videoRGBBuffer
-
-TouchGFX_Framebuffer
-                0x00000000200c4f10    0xbb800 load address 0x0000000008264110
- TouchGFX_Framebuffer
-                0x00000000200c4f10    0xbb800 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
-                0x0000000020180710                . = ALIGN (0x4)
-
-.bss            0x0000000020180710    0x1af70 load address 0x000000000831f910
-                0x0000000020180710                _sbss = .
-                0x0000000020180710                __bss_start__ = _sbss
+.bss            0x0000000020009710    0x1af70 load address 0x0000000008031758
+                0x0000000020009710                _sbss = .
+                0x0000000020009710                __bss_start__ = _sbss
  *(.bss)
- .bss           0x0000000020180710       0x1c c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+ .bss           0x0000000020009710       0x1c c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
  *(.bss*)
- .bss.hcrc      0x000000002018072c       0x24 ./Core/Src/main.o
-                0x000000002018072c                hcrc
- .bss.hdma2d    0x0000000020180750       0x58 ./Core/Src/main.o
-                0x0000000020180750                hdma2d
- .bss.hdsi      0x00000000201807a8       0x1c ./Core/Src/main.o
-                0x00000000201807a8                hdsi
- .bss.hi2c4     0x00000000201807c4       0x54 ./Core/Src/main.o
-                0x00000000201807c4                hi2c4
- .bss.hjpeg     0x0000000020180818       0x58 ./Core/Src/main.o
-                0x0000000020180818                hjpeg
+ .bss.hcrc      0x000000002000972c       0x24 ./Core/Src/main.o
+                0x000000002000972c                hcrc
+ .bss.hdma2d    0x0000000020009750       0x58 ./Core/Src/main.o
+                0x0000000020009750                hdma2d
+ .bss.hdsi      0x00000000200097a8       0x1c ./Core/Src/main.o
+                0x00000000200097a8                hdsi
+ .bss.hi2c4     0x00000000200097c4       0x54 ./Core/Src/main.o
+                0x00000000200097c4                hi2c4
+ .bss.hjpeg     0x0000000020009818       0x58 ./Core/Src/main.o
+                0x0000000020009818                hjpeg
  .bss.hdma_jpeg_in
-                0x0000000020180870       0x60 ./Core/Src/main.o
-                0x0000000020180870                hdma_jpeg_in
+                0x0000000020009870       0x60 ./Core/Src/main.o
+                0x0000000020009870                hdma_jpeg_in
  .bss.hdma_jpeg_out
-                0x00000000201808d0       0x60 ./Core/Src/main.o
-                0x00000000201808d0                hdma_jpeg_out
- .bss.hltdc     0x0000000020180930       0xa8 ./Core/Src/main.o
-                0x0000000020180930                hltdc
- .bss.hqspi     0x00000000201809d8       0x4c ./Core/Src/main.o
-                0x00000000201809d8                hqspi
- .bss.hspi1     0x0000000020180a24       0x64 ./Core/Src/main.o
-                0x0000000020180a24                hspi1
- .bss.hsdram1   0x0000000020180a88       0x34 ./Core/Src/main.o
-                0x0000000020180a88                hsdram1
+                0x00000000200098d0       0x60 ./Core/Src/main.o
+                0x00000000200098d0                hdma_jpeg_out
+ .bss.hltdc     0x0000000020009930       0xa8 ./Core/Src/main.o
+                0x0000000020009930                hltdc
+ .bss.hqspi     0x00000000200099d8       0x4c ./Core/Src/main.o
+                0x00000000200099d8                hqspi
+ .bss.hspi1     0x0000000020009a24       0x64 ./Core/Src/main.o
+                0x0000000020009a24                hspi1
+ .bss.hsdram1   0x0000000020009a88       0x34 ./Core/Src/main.o
+                0x0000000020009a88                hsdram1
  .bss.defaultTaskHandle
-                0x0000000020180abc        0x4 ./Core/Src/main.o
-                0x0000000020180abc                defaultTaskHandle
+                0x0000000020009abc        0x4 ./Core/Src/main.o
+                0x0000000020009abc                defaultTaskHandle
  .bss.TouchGFXTaskHandle
-                0x0000000020180ac0        0x4 ./Core/Src/main.o
-                0x0000000020180ac0                TouchGFXTaskHandle
+                0x0000000020009ac0        0x4 ./Core/Src/main.o
+                0x0000000020009ac0                TouchGFXTaskHandle
  .bss.videoTaskHandle
-                0x0000000020180ac4        0x4 ./Core/Src/main.o
-                0x0000000020180ac4                videoTaskHandle
+                0x0000000020009ac4        0x4 ./Core/Src/main.o
+                0x0000000020009ac4                videoTaskHandle
  .bss.FMC_Initialized
-                0x0000000020180ac8        0x4 ./Core/Src/stm32f7xx_hal_msp.o
- .bss.htim6     0x0000000020180acc       0x4c ./Core/Src/stm32f7xx_hal_timebase_tim.o
-                0x0000000020180acc                htim6
+                0x0000000020009ac8        0x4 ./Core/Src/stm32f7xx_hal_msp.o
+ .bss.htim6     0x0000000020009acc       0x4c ./Core/Src/stm32f7xx_hal_timebase_tim.o
+                0x0000000020009acc                htim6
  .bss.__sbrk_heap_end
-                0x0000000020180b18        0x4 ./Core/Src/sysmem.o
- .bss.uwTick    0x0000000020180b1c        0x4 ./Drivers/STM32F7xx_HAL_Driver/stm32f7xx_hal.o
-                0x0000000020180b1c                uwTick
+                0x0000000020009b18        0x4 ./Core/Src/sysmem.o
+ .bss.uwTick    0x0000000020009b1c        0x4 ./Drivers/STM32F7xx_HAL_Driver/stm32f7xx_hal.o
+                0x0000000020009b1c                uwTick
  .bss.KernelState
-                0x0000000020180b20        0x4 ./Middlewares/FreeRTOS/cmsis_os2.o
- .bss.Idle_TCB  0x0000000020180b24       0x5c ./Middlewares/FreeRTOS/cmsis_os2.o
+                0x0000000020009b20        0x4 ./Middlewares/FreeRTOS/cmsis_os2.o
+ .bss.Idle_TCB  0x0000000020009b24       0x5c ./Middlewares/FreeRTOS/cmsis_os2.o
  .bss.Idle_Stack
-                0x0000000020180b80      0x200 ./Middlewares/FreeRTOS/cmsis_os2.o
+                0x0000000020009b80      0x200 ./Middlewares/FreeRTOS/cmsis_os2.o
  .bss.Timer_TCB
-                0x0000000020180d80       0x5c ./Middlewares/FreeRTOS/cmsis_os2.o
+                0x0000000020009d80       0x5c ./Middlewares/FreeRTOS/cmsis_os2.o
  .bss.Timer_Stack
-                0x0000000020180ddc      0x400 ./Middlewares/FreeRTOS/cmsis_os2.o
- .bss.ucHeap    0x00000000201811dc    0x13880 ./Middlewares/FreeRTOS/heap_4.o
- .bss.xStart    0x0000000020194a5c        0x8 ./Middlewares/FreeRTOS/heap_4.o
- .bss.pxEnd     0x0000000020194a64        0x4 ./Middlewares/FreeRTOS/heap_4.o
+                0x0000000020009ddc      0x400 ./Middlewares/FreeRTOS/cmsis_os2.o
+ .bss.ucHeap    0x000000002000a1dc    0x13880 ./Middlewares/FreeRTOS/heap_4.o
+ .bss.xStart    0x000000002001da5c        0x8 ./Middlewares/FreeRTOS/heap_4.o
+ .bss.pxEnd     0x000000002001da64        0x4 ./Middlewares/FreeRTOS/heap_4.o
  .bss.xFreeBytesRemaining
-                0x0000000020194a68        0x4 ./Middlewares/FreeRTOS/heap_4.o
+                0x000000002001da68        0x4 ./Middlewares/FreeRTOS/heap_4.o
  .bss.xMinimumEverFreeBytesRemaining
-                0x0000000020194a6c        0x4 ./Middlewares/FreeRTOS/heap_4.o
+                0x000000002001da6c        0x4 ./Middlewares/FreeRTOS/heap_4.o
  .bss.xBlockAllocatedBit
-                0x0000000020194a70        0x4 ./Middlewares/FreeRTOS/heap_4.o
+                0x000000002001da70        0x4 ./Middlewares/FreeRTOS/heap_4.o
  .bss.ucMaxSysCallPriority
-                0x0000000020194a74        0x1 ./Middlewares/FreeRTOS/port.o
- *fill*         0x0000000020194a75        0x3 
+                0x000000002001da74        0x1 ./Middlewares/FreeRTOS/port.o
+ *fill*         0x000000002001da75        0x3 
  .bss.ulMaxPRIGROUPValue
-                0x0000000020194a78        0x4 ./Middlewares/FreeRTOS/port.o
+                0x000000002001da78        0x4 ./Middlewares/FreeRTOS/port.o
  .bss.xQueueRegistry
-                0x0000000020194a7c       0x40 ./Middlewares/FreeRTOS/queue.o
-                0x0000000020194a7c                xQueueRegistry
+                0x000000002001da7c       0x40 ./Middlewares/FreeRTOS/queue.o
+                0x000000002001da7c                xQueueRegistry
  .bss.pxCurrentTCB
-                0x0000000020194abc        0x4 ./Middlewares/FreeRTOS/tasks.o
-                0x0000000020194abc                pxCurrentTCB
+                0x000000002001dabc        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dabc                pxCurrentTCB
  .bss.pxReadyTasksLists
-                0x0000000020194ac0      0x460 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dac0      0x460 ./Middlewares/FreeRTOS/tasks.o
  .bss.xDelayedTaskList1
-                0x0000000020194f20       0x14 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df20       0x14 ./Middlewares/FreeRTOS/tasks.o
  .bss.xDelayedTaskList2
-                0x0000000020194f34       0x14 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df34       0x14 ./Middlewares/FreeRTOS/tasks.o
  .bss.pxDelayedTaskList
-                0x0000000020194f48        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df48        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.pxOverflowDelayedTaskList
-                0x0000000020194f4c        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df4c        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xPendingReadyList
-                0x0000000020194f50       0x14 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df50       0x14 ./Middlewares/FreeRTOS/tasks.o
  .bss.xTasksWaitingTermination
-                0x0000000020194f64       0x14 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df64       0x14 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxDeletedTasksWaitingCleanUp
-                0x0000000020194f78        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df78        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xSuspendedTaskList
-                0x0000000020194f7c       0x14 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df7c       0x14 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxCurrentNumberOfTasks
-                0x0000000020194f90        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df90        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xTickCount
-                0x0000000020194f94        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df94        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxTopReadyPriority
-                0x0000000020194f98        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df98        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xSchedulerRunning
-                0x0000000020194f9c        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001df9c        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxPendedTicks
-                0x0000000020194fa0        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfa0        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xYieldPending
-                0x0000000020194fa4        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfa4        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xNumOfOverflows
-                0x0000000020194fa8        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfa8        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxTaskNumber
-                0x0000000020194fac        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfac        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xNextTaskUnblockTime
-                0x0000000020194fb0        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfb0        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xIdleTaskHandle
-                0x0000000020194fb4        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfb4        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.uxSchedulerSuspended
-                0x0000000020194fb8        0x4 ./Middlewares/FreeRTOS/tasks.o
+                0x000000002001dfb8        0x4 ./Middlewares/FreeRTOS/tasks.o
  .bss.xActiveTimerList1
-                0x0000000020194fbc       0x14 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dfbc       0x14 ./Middlewares/FreeRTOS/timers.o
  .bss.xActiveTimerList2
-                0x0000000020194fd0       0x14 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dfd0       0x14 ./Middlewares/FreeRTOS/timers.o
  .bss.pxCurrentTimerList
-                0x0000000020194fe4        0x4 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dfe4        0x4 ./Middlewares/FreeRTOS/timers.o
  .bss.pxOverflowTimerList
-                0x0000000020194fe8        0x4 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dfe8        0x4 ./Middlewares/FreeRTOS/timers.o
  .bss.xTimerQueue
-                0x0000000020194fec        0x4 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dfec        0x4 ./Middlewares/FreeRTOS/timers.o
  .bss.xTimerTaskHandle
-                0x0000000020194ff0        0x4 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dff0        0x4 ./Middlewares/FreeRTOS/timers.o
  .bss.xLastTime.2
-                0x0000000020194ff4        0x4 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dff4        0x4 ./Middlewares/FreeRTOS/timers.o
  .bss.ucStaticTimerQueueStorage.1
-                0x0000000020194ff8       0xa0 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001dff8       0xa0 ./Middlewares/FreeRTOS/timers.o
  .bss.xStaticTimerQueue.0
-                0x0000000020195098       0x50 ./Middlewares/FreeRTOS/timers.o
+                0x000000002001e098       0x50 ./Middlewares/FreeRTOS/timers.o
  .bss._ZZ23getFont_verdana_10_4bppvE15verdana_10_4bpp
-                0x00000000201950e8       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
+                0x000000002001e0e8       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
  .bss._ZGVZ23getFont_verdana_10_4bppvE15verdana_10_4bpp
-                0x0000000020195114        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
+                0x000000002001e114        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
  .bss._ZZ23getFont_verdana_20_4bppvE15verdana_20_4bpp
-                0x0000000020195118       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
+                0x000000002001e118       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
  .bss._ZGVZ23getFont_verdana_20_4bppvE15verdana_20_4bpp
-                0x0000000020195144        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
+                0x000000002001e144        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
  .bss._ZZ23getFont_verdana_40_4bppvE15verdana_40_4bpp
-                0x0000000020195148       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
+                0x000000002001e148       0x2c ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
  .bss._ZGVZ23getFont_verdana_40_4bppvE15verdana_40_4bpp
-                0x0000000020195174        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
+                0x000000002001e174        0x4 ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
  .bss._ZL14languagesArray
-                0x0000000020195178        0x4 ./TouchGFX/generated/texts/src/Texts.o
+                0x000000002001e178        0x4 ./TouchGFX/generated/texts/src/Texts.o
  .bss._ZN8touchgfx5Texts15currentLanguageE
-                0x000000002019517c        0x2 ./TouchGFX/generated/texts/src/Texts.o
-                0x000000002019517c                touchgfx::Texts::currentLanguage
- *fill*         0x000000002019517e        0x2 
+                0x000000002001e17c        0x2 ./TouchGFX/generated/texts/src/Texts.o
+                0x000000002001e17c                touchgfx::Texts::currentLanguage
+ *fill*         0x000000002001e17e        0x2 
  .bss._ZL18currentLanguagePtr
-                0x0000000020195180        0x4 ./TouchGFX/generated/texts/src/Texts.o
+                0x000000002001e180        0x4 ./TouchGFX/generated/texts/src/Texts.o
  .bss._ZL22currentLanguageIndices
-                0x0000000020195184        0x4 ./TouchGFX/generated/texts/src/Texts.o
+                0x000000002001e184        0x4 ./TouchGFX/generated/texts/src/Texts.o
  .bss.touchgfx_fonts
-                0x0000000020195188        0xc ./TouchGFX/generated/texts/src/TypedTextDatabase.o
-                0x0000000020195188                touchgfx_fonts
+                0x000000002001e188        0xc ./TouchGFX/generated/texts/src/TypedTextDatabase.o
+                0x000000002001e188                touchgfx_fonts
  .bss.FrameBufferAddress
-                0x0000000020195194        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x0000000020195194                FrameBufferAddress
+                0x000000002001e194        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e194                FrameBufferAddress
  .bss.JPEG_InputImageIndex
-                0x0000000020195198        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x0000000020195198                JPEG_InputImageIndex
+                0x000000002001e198        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e198                JPEG_InputImageIndex
  .bss.JPEG_InputImageSize_Bytes
-                0x000000002019519c        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x000000002019519c                JPEG_InputImageSize_Bytes
+                0x000000002001e19c        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e19c                JPEG_InputImageSize_Bytes
  .bss.JPEG_InputImageAddress
-                0x00000000201951a0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951a0                JPEG_InputImageAddress
+                0x000000002001e1a0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1a0                JPEG_InputImageAddress
  .bss.Jpeg_HWDecodingEnd
-                0x00000000201951a4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951a4                Jpeg_HWDecodingEnd
+                0x000000002001e1a4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1a4                Jpeg_HWDecodingEnd
  .bss.JPEG_OUT_Read_BufferIndex
-                0x00000000201951a8        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951a8                JPEG_OUT_Read_BufferIndex
+                0x000000002001e1a8        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1a8                JPEG_OUT_Read_BufferIndex
  .bss.JPEG_OUT_Write_BufferIndex
-                0x00000000201951ac        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951ac                JPEG_OUT_Write_BufferIndex
+                0x000000002001e1ac        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1ac                JPEG_OUT_Write_BufferIndex
  .bss.Output_Is_Paused
-                0x00000000201951b0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951b0                Output_Is_Paused
+                0x000000002001e1b0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1b0                Output_Is_Paused
  .bss.JpegProcessing_End
-                0x00000000201951b4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951b4                JpegProcessing_End
+                0x000000002001e1b4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1b4                JpegProcessing_End
  .bss.MCU_TotalNb
-                0x00000000201951b8        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951b8                MCU_TotalNb
+                0x000000002001e1b8        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1b8                MCU_TotalNb
  .bss.pConvert_Function
-                0x00000000201951bc        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951bc                pConvert_Function
+                0x000000002001e1bc        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1bc                pConvert_Function
  .bss.MCU_BlockIndex
-                0x00000000201951c0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951c0                MCU_BlockIndex
+                0x000000002001e1c0        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1c0                MCU_BlockIndex
  .bss.semDecodingDone
-                0x00000000201951c4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
-                0x00000000201951c4                semDecodingDone
+                0x000000002001e1c4        0x4 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1c4                semDecodingDone
  .bss._ZL20JPEG_ConvertorParams
-                0x00000000201951c8       0x14 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
+                0x000000002001e1c8       0x14 ./TouchGFX/target/generated/HardwareMJPEGDecoder.o
  .bss._ZL16frame_buffer_sem
-                0x00000000201951dc        0x4 ./TouchGFX/target/generated/OSWrappers.o
+                0x000000002001e1dc        0x4 ./TouchGFX/target/generated/OSWrappers.o
  .bss._ZL11vsync_queue
-                0x00000000201951e0        0x4 ./TouchGFX/target/generated/OSWrappers.o
+                0x000000002001e1e0        0x4 ./TouchGFX/target/generated/OSWrappers.o
  .bss._ZZN12FrontendHeap11getInstanceEvE8instance
-                0x00000000201951e4      0x240 ./TouchGFX/target/generated/TouchGFXConfiguration.o
-                0x00000000201951e4                FrontendHeap::getInstance()::instance
+                0x000000002001e1e4      0x240 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+                0x000000002001e1e4                FrontendHeap::getInstance()::instance
  .bss._ZGVZN12FrontendHeap11getInstanceEvE8instance
-                0x0000000020195424        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
-                0x0000000020195424                guard variable for FrontendHeap::getInstance()::instance
- .bss._ZL2tc    0x0000000020195428        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
- .bss._ZL3dma   0x000000002019542c      0xda0 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+                0x000000002001e424        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+                0x000000002001e424                guard variable for FrontendHeap::getInstance()::instance
+ .bss._ZL2tc    0x000000002001e428        0x4 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+ .bss._ZL3dma   0x000000002001e42c      0xda0 ./TouchGFX/target/generated/TouchGFXConfiguration.o
  .bss._ZL7display
-                0x00000000201961cc       0x78 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+                0x000000002001f1cc       0x78 ./TouchGFX/target/generated/TouchGFXConfiguration.o
  .bss._ZL5texts
-                0x0000000020196244        0x1 ./TouchGFX/target/generated/TouchGFXConfiguration.o
- *fill*         0x0000000020196245        0x3 
- .bss._ZL3hal   0x0000000020196248       0x7c ./TouchGFX/target/generated/TouchGFXConfiguration.o
+                0x000000002001f244        0x1 ./TouchGFX/target/generated/TouchGFXConfiguration.o
+ *fill*         0x000000002001f245        0x3 
+ .bss._ZL3hal   0x000000002001f248       0x7c ./TouchGFX/target/generated/TouchGFXConfiguration.o
  .bss.mjpegdecoder1
-                0x00000000201962c4       0x44 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
-                0x00000000201962c4                mjpegdecoder1
+                0x000000002001f2c4       0x44 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+                0x000000002001f2c4                mjpegdecoder1
  .bss.videoController
-                0x0000000020196308       0x48 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
-                0x0000000020196308                videoController
+                0x000000002001f308       0x48 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+                0x000000002001f308                videoController
  .bss.JPEG_ConvertorParams
-                0x0000000020196350       0x40 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x000000002001f350       0x40 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.CR_RED_LUT
-                0x0000000020196390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x000000002001f390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.CB_BLUE_LUT
-                0x0000000020196790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x000000002001f790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.CR_GREEN_LUT
-                0x0000000020196b90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x000000002001fb90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.CB_GREEN_LUT
-                0x0000000020196f90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x000000002001ff90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.RED_Y_LUT
-                0x0000000020197390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020020390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.RED_CB_LUT
-                0x0000000020197790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020020790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.BLUE_CB_RED_CR_LUT
-                0x0000000020197b90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020020b90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.GREEN_Y_LUT
-                0x0000000020197f90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020020f90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.GREEN_CR_LUT
-                0x0000000020198390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020021390      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.GREEN_CB_LUT
-                0x0000000020198790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020021790      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.BLUE_Y_LUT
-                0x0000000020198b90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020021b90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.BLUE_CR_LUT
-                0x0000000020198f90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020021f90      0x400 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Y_MCU_LUT
-                0x0000000020199390      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022390      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Y_MCU_444_LUT
-                0x0000000020199590       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022590       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cb_MCU_420_LUT
-                0x0000000020199610      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022610      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cb_MCU_422_LUT
-                0x0000000020199810      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022810      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cb_MCU_444_LUT
-                0x0000000020199a10       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022a10       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cr_MCU_420_LUT
-                0x0000000020199a90      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022a90      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cr_MCU_422_LUT
-                0x0000000020199c90      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022c90      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_Cr_MCU_444_LUT
-                0x0000000020199e90       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022e90       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_K_MCU_420_LUT
-                0x0000000020199f10      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020022f10      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_K_MCU_422_LUT
-                0x000000002019a110      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020023110      0x200 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_K_MCU_444_LUT
-                0x000000002019a310       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
+                0x0000000020023310       0x80 ./TouchGFX/target/generated/tgfx_jpeg_utils.o
  .bss.JPEG_ConvertorParams
-                0x000000002019a390       0x40 ./Utilities/jpeg_utils.o
+                0x0000000020023390       0x40 ./Utilities/jpeg_utils.o
  .bss.CR_RED_LUT
-                0x000000002019a3d0      0x400 ./Utilities/jpeg_utils.o
+                0x00000000200233d0      0x400 ./Utilities/jpeg_utils.o
  .bss.CB_BLUE_LUT
-                0x000000002019a7d0      0x400 ./Utilities/jpeg_utils.o
+                0x00000000200237d0      0x400 ./Utilities/jpeg_utils.o
  .bss.CR_GREEN_LUT
-                0x000000002019abd0      0x400 ./Utilities/jpeg_utils.o
+                0x0000000020023bd0      0x400 ./Utilities/jpeg_utils.o
  .bss.CB_GREEN_LUT
-                0x000000002019afd0      0x400 ./Utilities/jpeg_utils.o
+                0x0000000020023fd0      0x400 ./Utilities/jpeg_utils.o
  .bss._ZN8touchgfx3HAL13DISPLAY_WIDTHE
-                0x000000002019b3d0        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3d0                touchgfx::HAL::DISPLAY_WIDTH
+                0x00000000200243d0        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243d0                touchgfx::HAL::DISPLAY_WIDTH
  .bss._ZN8touchgfx3HAL14DISPLAY_HEIGHTE
-                0x000000002019b3d2        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3d2                touchgfx::HAL::DISPLAY_HEIGHT
+                0x00000000200243d2        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243d2                touchgfx::HAL::DISPLAY_HEIGHT
  .bss._ZN8touchgfx3HAL16DISPLAY_ROTATIONE
-                0x000000002019b3d4        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3d4                touchgfx::HAL::DISPLAY_ROTATION
- *fill*         0x000000002019b3d5        0x1 
+                0x00000000200243d4        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243d4                touchgfx::HAL::DISPLAY_ROTATION
+ *fill*         0x00000000200243d5        0x1 
  .bss._ZN8touchgfx3HAL18FRAME_BUFFER_WIDTHE
-                0x000000002019b3d6        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3d6                touchgfx::HAL::FRAME_BUFFER_WIDTH
+                0x00000000200243d6        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243d6                touchgfx::HAL::FRAME_BUFFER_WIDTH
  .bss._ZN8touchgfx3HAL19FRAME_BUFFER_HEIGHTE
-                0x000000002019b3d8        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3d8                touchgfx::HAL::FRAME_BUFFER_HEIGHT
+                0x00000000200243d8        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243d8                touchgfx::HAL::FRAME_BUFFER_HEIGHT
  .bss._ZN8touchgfx3HAL20USE_DOUBLE_BUFFERINGE
-                0x000000002019b3da        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3da                touchgfx::HAL::USE_DOUBLE_BUFFERING
+                0x00000000200243da        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243da                touchgfx::HAL::USE_DOUBLE_BUFFERING
  .bss._ZN8touchgfx3HAL21USE_ANIMATION_STORAGEE
-                0x000000002019b3db        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3db                touchgfx::HAL::USE_ANIMATION_STORAGE
+                0x00000000200243db        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243db                touchgfx::HAL::USE_ANIMATION_STORAGE
  .bss._ZN8touchgfx3HAL8instanceE
-                0x000000002019b3dc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3dc                touchgfx::HAL::instance
+                0x00000000200243dc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243dc                touchgfx::HAL::instance
  .bss._ZN8touchgfx3HAL9isDrawingE
-                0x000000002019b3e0        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
-                0x000000002019b3e0                touchgfx::HAL::isDrawing
+                0x00000000200243e0        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+                0x00000000200243e0                touchgfx::HAL::isDrawing
  .bss._ZZN8touchgfx3HAL4tickEvE12touchTickCnt
-                0x000000002019b3e1        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
- *fill*         0x000000002019b3e2        0x2 
+                0x00000000200243e1        0x1 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(HAL.o)
+ *fill*         0x00000000200243e2        0x2 
  .bss._ZN8touchgfx3LCD12defaultColorE
-                0x000000002019b3e4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD.o)
-                0x000000002019b3e4                touchgfx::LCD::defaultColor
+                0x00000000200243e4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD.o)
+                0x00000000200243e4                touchgfx::LCD::defaultColor
  .bss._ZN8touchgfx16TouchCalibration6matrixE
-                0x000000002019b3e8       0x2c C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TouchCalibration.o)
-                0x000000002019b3e8                touchgfx::TouchCalibration::matrix
+                0x00000000200243e8       0x2c C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TouchCalibration.o)
+                0x00000000200243e8                touchgfx::TouchCalibration::matrix
  .bss._ZN8touchgfx11Application12debugPrinterE
-                0x000000002019b414        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000002019b414                touchgfx::Application::debugPrinter
+                0x0000000020024414        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x0000000020024414                touchgfx::Application::debugPrinter
  .bss._ZN8touchgfx11Application13currentScreenE
-                0x000000002019b418        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000002019b418                touchgfx::Application::currentScreen
+                0x0000000020024418        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x0000000020024418                touchgfx::Application::currentScreen
  .bss._ZN8touchgfx11Application17currentTransitionE
-                0x000000002019b41c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000002019b41c                touchgfx::Application::currentTransition
+                0x000000002002441c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x000000002002441c                touchgfx::Application::currentTransition
  .bss._ZN8touchgfx11Application22debugRegionInvalidRectE
-                0x000000002019b420        0x8 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000002019b420                touchgfx::Application::debugRegionInvalidRect
+                0x0000000020024420        0x8 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x0000000020024420                touchgfx::Application::debugRegionInvalidRect
  .bss._ZN8touchgfx11Application8instanceE
-                0x000000002019b428        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
-                0x000000002019b428                touchgfx::Application::instance
+                0x0000000020024428        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Application.o)
+                0x0000000020024428                touchgfx::Application::instance
  .bss._ZN8touchgfx9TypedText10typedTextsE
-                0x000000002019b42c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
-                0x000000002019b42c                touchgfx::TypedText::typedTexts
+                0x000000002002442c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
+                0x000000002002442c                touchgfx::TypedText::typedTexts
  .bss._ZN8touchgfx9TypedText18numberOfTypedTextsE
-                0x000000002019b430        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
-                0x000000002019b430                touchgfx::TypedText::numberOfTypedTexts
- *fill*         0x000000002019b432        0x2 
+                0x0000000020024430        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
+                0x0000000020024430                touchgfx::TypedText::numberOfTypedTexts
+ *fill*         0x0000000020024432        0x2 
  .bss._ZN8touchgfx9TypedText5fontsE
-                0x000000002019b434        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
-                0x000000002019b434                touchgfx::TypedText::fonts
+                0x0000000020024434        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
+                0x0000000020024434                touchgfx::TypedText::fonts
  .bss._ZN8touchgfx9TypedText5textsE
-                0x000000002019b438        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
-                0x000000002019b438                touchgfx::TypedText::texts
+                0x0000000020024438        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(TypedText.o)
+                0x0000000020024438                touchgfx::TypedText::texts
  .bss._ZN8touchgfx11FontManager8providerE
-                0x000000002019b43c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(FontManager.o)
-                0x000000002019b43c                touchgfx::FontManager::provider
+                0x000000002002443c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(FontManager.o)
+                0x000000002002443c                touchgfx::FontManager::provider
  .bss._ZN8touchgfx6Bitmap10cacheTableE
-                0x000000002019b440        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b440                touchgfx::Bitmap::cacheTable
+                0x0000000020024440        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024440                touchgfx::Bitmap::cacheTable
  .bss._ZN8touchgfx6Bitmap10dynBitmapsE
-                0x000000002019b444        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b444                touchgfx::Bitmap::dynBitmaps
+                0x0000000020024444        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024444                touchgfx::Bitmap::dynBitmaps
  .bss._ZN8touchgfx6Bitmap11totalMemoryE
-                0x000000002019b448        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b448                touchgfx::Bitmap::totalMemory
+                0x0000000020024448        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024448                touchgfx::Bitmap::totalMemory
  .bss._ZN8touchgfx6Bitmap12nextFreeDataE
-                0x000000002019b44c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b44c                touchgfx::Bitmap::nextFreeData
+                0x000000002002444c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x000000002002444c                touchgfx::Bitmap::nextFreeData
  .bss._ZN8touchgfx6Bitmap13uncachedCountE
-                0x000000002019b450        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b450                touchgfx::Bitmap::uncachedCount
- *fill*         0x000000002019b452        0x2 
+                0x0000000020024450        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024450                touchgfx::Bitmap::uncachedCount
+ *fill*         0x0000000020024452        0x2 
  .bss._ZN8touchgfx6Bitmap15allocationTableE
-                0x000000002019b454        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b454                touchgfx::Bitmap::allocationTable
+                0x0000000020024454        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024454                touchgfx::Bitmap::allocationTable
  .bss._ZN8touchgfx6Bitmap15memoryRemainingE
-                0x000000002019b458        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b458                touchgfx::Bitmap::memoryRemaining
+                0x0000000020024458        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024458                touchgfx::Bitmap::memoryRemaining
  .bss._ZN8touchgfx6Bitmap15numberOfBitmapsE
-                0x000000002019b45c        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b45c                touchgfx::Bitmap::numberOfBitmaps
+                0x000000002002445c        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x000000002002445c                touchgfx::Bitmap::numberOfBitmaps
  .bss._ZN8touchgfx6Bitmap19nextAllocationIndexE
-                0x000000002019b45e        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b45e                touchgfx::Bitmap::nextAllocationIndex
+                0x000000002002445e        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x000000002002445e                touchgfx::Bitmap::nextAllocationIndex
  .bss._ZN8touchgfx6Bitmap22numberOfDynamicBitmapsE
-                0x000000002019b460        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b460                touchgfx::Bitmap::numberOfDynamicBitmaps
- *fill*         0x000000002019b462        0x2 
+                0x0000000020024460        0x2 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024460                touchgfx::Bitmap::numberOfDynamicBitmaps
+ *fill*         0x0000000020024462        0x2 
  .bss._ZN8touchgfx6Bitmap7bitmapsE
-                0x000000002019b464        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
-                0x000000002019b464                touchgfx::Bitmap::bitmaps
+                0x0000000020024464        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(Bitmap.o)
+                0x0000000020024464                touchgfx::Bitmap::bitmaps
  .bss._ZGVZN8touchgfx8LCD16bpp37enableTextureMapperA4_NearestNeighborEvE24tm_A4_NearestNeighbor_GA
-                0x000000002019b468        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024468        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp37enableTextureMapperA4_NearestNeighborEvE26tm_A4_NearestNeighbor_NoGA
-                0x000000002019b46c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x000000002002446c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp43enableTextureMapperA4_BilinearInterpolationEvE30tm_A4_BilinearInterpolation_GA
-                0x000000002019b470        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024470        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp43enableTextureMapperA4_BilinearInterpolationEvE32tm_A4_BilinearInterpolation_NoGA
-                0x000000002019b474        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024474        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp43enableTextureMapperARGB8888_NearestNeighborEvE40tm_ARGB8888_NonOpaque_NearestNeighbor_GA
-                0x000000002019b478        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024478        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp43enableTextureMapperARGB8888_NearestNeighborEvE42tm_ARGB8888_NonOpaque_NearestNeighbor_NoGA
-                0x000000002019b47c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x000000002002447c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp44enableTextureMapperL8_RGB565_NearestNeighborEvE38tm_L8_RGB565_Opaque_NearestNeighbor_GA
-                0x000000002019b480        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024480        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp44enableTextureMapperL8_RGB565_NearestNeighborEvE40tm_L8_RGB565_Opaque_NearestNeighbor_NoGA
-                0x000000002019b484        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024484        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp44enableTextureMapperL8_RGB888_NearestNeighborEvE38tm_L8_RGB888_Opaque_NearestNeighbor_GA
-                0x000000002019b488        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024488        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp44enableTextureMapperL8_RGB888_NearestNeighborEvE40tm_L8_RGB888_Opaque_NearestNeighbor_NoGA
-                0x000000002019b48c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x000000002002448c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp46enableTextureMapperL8_ARGB8888_NearestNeighborEvE43tm_L8_ARGB8888_NonOpaque_NearestNeighbor_GA
-                0x000000002019b490        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024490        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp46enableTextureMapperL8_ARGB8888_NearestNeighborEvE45tm_L8_ARGB8888_NonOpaque_NearestNeighbor_NoGA
-                0x000000002019b494        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024494        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp48enableTextureMapperRGB565_Opaque_NearestNeighborEvE35tm_RGB565_Opaque_NearestNeighbor_GA
-                0x000000002019b498        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x0000000020024498        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp48enableTextureMapperRGB565_Opaque_NearestNeighborEvE37tm_RGB565_Opaque_NearestNeighbor_NoGA
-                0x000000002019b49c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x000000002002449c        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp49enableTextureMapperARGB8888_BilinearInterpolationEvE46tm_ARGB8888_NonOpaque_BilinearInterpolation_GA
-                0x000000002019b4a0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244a0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp49enableTextureMapperARGB8888_BilinearInterpolationEvE48tm_ARGB8888_NonOpaque_BilinearInterpolation_NoGA
-                0x000000002019b4a4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244a4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp50enableTextureMapperL8_RGB565_BilinearInterpolationEvE44tm_L8_RGB565_Opaque_BilinearInterpolation_GA
-                0x000000002019b4a8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244a8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp50enableTextureMapperL8_RGB565_BilinearInterpolationEvE46tm_L8_RGB565_Opaque_BilinearInterpolation_NoGA
-                0x000000002019b4ac        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244ac        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp50enableTextureMapperL8_RGB888_BilinearInterpolationEvE44tm_L8_RGB888_Opaque_BilinearInterpolation_GA
-                0x000000002019b4b0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244b0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp50enableTextureMapperL8_RGB888_BilinearInterpolationEvE46tm_L8_RGB888_Opaque_BilinearInterpolation_NoGA
-                0x000000002019b4b4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244b4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp51enableTextureMapperRGB565_NonOpaque_NearestNeighborEvE38tm_RGB565_NonOpaque_NearestNeighbor_GA
-                0x000000002019b4b8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244b8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp51enableTextureMapperRGB565_NonOpaque_NearestNeighborEvE40tm_RGB565_NonOpaque_NearestNeighbor_NoGA
-                0x000000002019b4bc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244bc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp52enableTextureMapperL8_ARGB8888_BilinearInterpolationEvE49tm_L8_ARGB8888_NonOpaque_BilinearInterpolation_GA
-                0x000000002019b4c0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244c0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp52enableTextureMapperL8_ARGB8888_BilinearInterpolationEvE51tm_L8_ARGB8888_NonOpaque_BilinearInterpolation_NoGA
-                0x000000002019b4c4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244c4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp54enableTextureMapperRGB565_Opaque_BilinearInterpolationEvE41tm_RGB565_Opaque_BilinearInterpolation_GA
-                0x000000002019b4c8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244c8        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp54enableTextureMapperRGB565_Opaque_BilinearInterpolationEvE43tm_RGB565_Opaque_BilinearInterpolation_NoGA
-                0x000000002019b4cc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244cc        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp57enableTextureMapperRGB565_NonOpaque_BilinearInterpolationEvE44tm_RGB565_NonOpaque_BilinearInterpolation_GA
-                0x000000002019b4d0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244d0        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss._ZGVZN8touchgfx8LCD16bpp57enableTextureMapperRGB565_NonOpaque_BilinearInterpolationEvE46tm_RGB565_NonOpaque_BilinearInterpolation_NoGA
-                0x000000002019b4d4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
+                0x00000000200244d4        0x4 C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc\libtouchgfx-float-abi-hard.a(LCD16bpp.o)
  .bss.__lock___atexit_recursive_mutex
-                0x000000002019b4d8        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
-                0x000000002019b4d8                __lock___atexit_recursive_mutex
+                0x00000000200244d8        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
+                0x00000000200244d8                __lock___atexit_recursive_mutex
  .bss.__lock___malloc_recursive_mutex
-                0x000000002019b4d9        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
-                0x000000002019b4d9                __lock___malloc_recursive_mutex
+                0x00000000200244d9        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
+                0x00000000200244d9                __lock___malloc_recursive_mutex
  .bss.__lock___sfp_recursive_mutex
-                0x000000002019b4da        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
-                0x000000002019b4da                __lock___sfp_recursive_mutex
+                0x00000000200244da        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
+                0x00000000200244da                __lock___sfp_recursive_mutex
  .bss.__lock___sinit_recursive_mutex
-                0x000000002019b4db        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
-                0x000000002019b4db                __lock___sinit_recursive_mutex
+                0x00000000200244db        0x1 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-lock.o)
+                0x00000000200244db                __lock___sinit_recursive_mutex
  .bss.__malloc_free_list
-                0x000000002019b4dc        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x000000002019b4dc                __malloc_free_list
+                0x00000000200244dc        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x00000000200244dc                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x000000002019b4e0        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x000000002019b4e0                __malloc_sbrk_start
+                0x00000000200244e0        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x00000000200244e0                __malloc_sbrk_start
  .bss._on_exit_args_instance
-                0x000000002019b4e4      0x108 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-on_exit_args.o)
+                0x00000000200244e4      0x108 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-on_exit_args.o)
  .bss._global_atexit0
-                0x000000002019b5ec       0x8c c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-__atexit.o)
+                0x00000000200245ec       0x8c c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-__atexit.o)
  .bss._global_atexit
-                0x000000002019b678        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-__call_atexit.o)
-                0x000000002019b678                _global_atexit
- .bss.errno     0x000000002019b67c        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-reent.o)
-                0x000000002019b67c                errno
+                0x0000000020024678        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-__call_atexit.o)
+                0x0000000020024678                _global_atexit
+ .bss.errno     0x000000002002467c        0x4 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(lib_a-reent.o)
+                0x000000002002467c                errno
  *(COMMON)
-                0x000000002019b680                . = ALIGN (0x4)
-                0x000000002019b680                _ebss = .
-                0x000000002019b680                __bss_end__ = _ebss
+                0x0000000020024680                . = ALIGN (0x4)
+                0x0000000020024680                _ebss = .
+                0x0000000020024680                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x000000002019b680      0x600 load address 0x000000000831f910
-                0x000000002019b680                . = ALIGN (0x8)
+                0x0000000020024680     0x2000 load address 0x0000000008031758
+                0x0000000020024680                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x000000002019b680                PROVIDE (_end = .)
-                0x000000002019b880                . = (. + _Min_Heap_Size)
- *fill*         0x000000002019b680      0x200 
-                0x000000002019bc80                . = (. + _Min_Stack_Size)
- *fill*         0x000000002019b880      0x400 
-                0x000000002019bc80                . = ALIGN (0x8)
+                0x0000000020024680                PROVIDE (_end = .)
+                0x0000000020025680                . = (. + _Min_Heap_Size)
+ *fill*         0x0000000020024680     0x1000 
+                0x0000000020026680                . = (. + _Min_Stack_Size)
+ *fill*         0x0000000020025680     0x1000 
+                0x0000000020026680                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -23844,6 +23785,77 @@ TouchGFX_Framebuffer
                 0x0000000000001c6b       0x1e c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
                 0x0000000000001c89       0x1e c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtn.o
+
+ExtFlashSection
+                0x0000000090000000   0x177000
+ *(ExtFlashSection ExtFlashSection.*)
+ ExtFlashSection
+                0x0000000090000000   0x177000 ./TouchGFX/generated/images/src/__generated/image_alternate_theme_images_backgrounds_800x480_poly.o
+                0x0000000090000000                image_alternate_theme_images_backgrounds_800x480_poly
+ *(.gnu.linkonce.r.*)
+                0x0000000090177000                . = ALIGN (0x4)
+
+FontFlashSection
+                0x0000000090177000      0x1a8
+ *(FontFlashSection FontFlashSection.*)
+ FontFlashSection
+                0x0000000090177000       0x18 ./TouchGFX/generated/fonts/src/Font_verdana_10_4bpp_0.o
+                0x0000000090177000                unicodes_verdana_10_4bpp_0
+ FontFlashSection
+                0x0000000090177018       0x46 ./TouchGFX/generated/fonts/src/Font_verdana_20_4bpp_0.o
+                0x0000000090177018                unicodes_verdana_20_4bpp_0
+ *fill*         0x000000009017705e        0x2 
+ FontFlashSection
+                0x0000000090177060      0x117 ./TouchGFX/generated/fonts/src/Font_verdana_40_4bpp_0.o
+                0x0000000090177060                unicodes_verdana_40_4bpp_0
+ *fill*         0x0000000090177177        0x1 
+ FontFlashSection
+                0x0000000090177178        0xe ./TouchGFX/generated/fonts/src/Table_verdana_10_4bpp.o
+                0x0000000090177178                glyphs_verdana_10_4bpp
+ *fill*         0x0000000090177186        0x2 
+ FontFlashSection
+                0x0000000090177188        0xe ./TouchGFX/generated/fonts/src/Table_verdana_20_4bpp.o
+                0x0000000090177188                glyphs_verdana_20_4bpp
+ *fill*         0x0000000090177196        0x2 
+ FontFlashSection
+                0x0000000090177198        0xe ./TouchGFX/generated/fonts/src/Table_verdana_40_4bpp.o
+                0x0000000090177198                glyphs_verdana_40_4bpp
+ *(.gnu.linkonce.r.*)
+                0x00000000901771a8                . = ALIGN (0x4)
+ *fill*         0x00000000901771a6        0x2 
+
+TextFlashSection
+                0x00000000901771a8       0x10
+ *(TextFlashSection TextFlashSection.*)
+ TextFlashSection
+                0x00000000901771a8        0x4 ./TouchGFX/generated/texts/src/LanguageGb.o
+                0x00000000901771a8                indicesGb
+ TextFlashSection
+                0x00000000901771ac        0x2 ./TouchGFX/generated/texts/src/Texts.o
+                0x00000000901771ac                texts_all_languages
+ *fill*         0x00000000901771ae        0x2 
+ TextFlashSection
+                0x00000000901771b0        0x8 ./TouchGFX/generated/texts/src/TypedTextDatabase.o
+                0x00000000901771b0                typedText_database_DEFAULT
+                0x00000000901771b4                typedTextDatabaseArray
+ *(.gnu.linkonce.r.*)
+                0x00000000901771b8                . = ALIGN (0x4)
+
+.rel.dyn        0x00000000901771b8        0x0
+ .rel.iplt      0x00000000901771b8        0x0 c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+
+BufferSection   0x00000000c0000000   0x177000
+ *(Video_RGB_Buffer Video_RGB_Buffer.*)
+ Video_RGB_Buffer
+                0x00000000c0000000    0xbb800 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+                0x00000000c0000000                videoRGBBuffer
+ *(.gnu.linkonce.r.*)
+                0x00000000c00bb800                . = ALIGN (0x4)
+ *(TouchGFX_Framebuffer TouchGFX_Framebuffer.*)
+ TouchGFX_Framebuffer
+                0x00000000c00bb800    0xbb800 ./TouchGFX/target/generated/TouchGFXGeneratedHAL.o
+ *(.gnu.linkonce.r.*)
+                0x00000000c0177000                . = ALIGN (0x4)
 OUTPUT(UOSM-Dashboard-MCU-F769NI.elf elf32-littlearm)
 LOAD linker stubs
 LOAD c:/st/stm32cubeide_1.12.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.200.202301161003/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc.a
