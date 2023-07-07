@@ -1,5 +1,6 @@
-Utilities/JPEG/jpeg_utils.o: ../Utilities/JPEG/jpeg_utils.c \
- ../Utilities/JPEG/jpeg_utils.h ../Core/Inc/jpeg_utils_conf.h \
+UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.o: \
+ ../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.c \
+ ../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.h \
  /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
  /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h \
@@ -41,8 +42,7 @@ Utilities/JPEG/jpeg_utils.o: ../Utilities/JPEG/jpeg_utils.c \
  /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_dsi.h \
  /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_jpeg.h
-../Utilities/JPEG/jpeg_utils.h:
-../Core/Inc/jpeg_utils_conf.h:
+../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.h:
 /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
 ../Core/Inc/stm32f7xx_hal_conf.h:
 /Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_rcc.h:

@@ -24,6 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "TaskManager.h"
 #include "mx25l512/mx25l512.h"
 #include "otm8009a/otm8009a.h"
 /* USER CODE END Includes */
@@ -230,7 +231,7 @@ int main(void)
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
+  RunTaskManager();
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */

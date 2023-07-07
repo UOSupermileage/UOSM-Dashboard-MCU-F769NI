@@ -10,6 +10,8 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Utilities/JPEG/subdir.mk
+-include UOSM-Core-MCU-L432/Modules/subdir.mk
+-include UOSM-Core-MCU-L432/Drivers/subdir.mk
 -include TouchGFX/target/generated/subdir.mk
 -include TouchGFX/target/subdir.mk
 -include TouchGFX/gui/src/screen_screen/subdir.mk
@@ -43,6 +45,7 @@ RM := rm -rf
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Drivers/BSP/Components/otm8009a/subdir.mk
 -include Drivers/BSP/Components/ft6x06/subdir.mk
+-include Core/Tasks/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
@@ -108,8 +111,8 @@ all: main-build
 main-build: UOSM-Dashboard-MCU-F769NI.elf secondary-outputs
 
 # Tool invocations
-UOSM-Dashboard-MCU-F769NI.elf UOSM-Dashboard-MCU-F769NI.map: $(OBJS) $(USER_OBJS) C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\STM32F769NIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "UOSM-Dashboard-MCU-F769NI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\STM32F769NIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UOSM-Dashboard-MCU-F769NI.map" -Wl,--gc-sections -static -L"C:\TouchGFXProjects\UOSM-Dashboard-MCU-F769NI\Middlewares\ST\touchgfx\lib\core\cortex_m7\gcc" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+UOSM-Dashboard-MCU-F769NI.elf UOSM-Dashboard-MCU-F769NI.map: $(OBJS) $(USER_OBJS) /Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/STM32F769NIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "UOSM-Dashboard-MCU-F769NI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/STM32F769NIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="UOSM-Dashboard-MCU-F769NI.map" -Wl,--gc-sections -static -L"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/Middlewares/ST/touchgfx/lib/core/cortex_m7/gcc" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

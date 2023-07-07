@@ -34,6 +34,7 @@ CPP_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
+Core/Tasks \
 Drivers/BSP/Components/ft6x06 \
 Drivers/BSP/Components/otm8009a \
 Drivers/STM32F7xx_HAL_Driver/Src \
@@ -67,5 +68,7 @@ TouchGFX/gui/src/model \
 TouchGFX/gui/src/screen_screen \
 TouchGFX/target \
 TouchGFX/target/generated \
+UOSM-Core-MCU-L432/Drivers \
+UOSM-Core-MCU-L432/Modules \
 Utilities/JPEG \
 

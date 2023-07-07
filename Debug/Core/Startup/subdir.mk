@@ -16,7 +16,7 @@ OBJS += \
 
 # Each subdirectory must supply rules for building sources it contributes
 Core/Startup/%.o: ../Core/Startup/%.s Core/Startup/subdir.mk
-	arm-none-eabi-gcc -mcpu=cortex-m7 -g3 -DDEBUG -c -I"C:/TouchGFXProjects/UOSM-Dashboard-MCU-F769NI/TouchGFX" -I../Middlewares/ST/touchgfx/framework/include -I../TouchGFX/generated/fonts/include -I../TouchGFX/generated/gui_generated/include -I../TouchGFX/generated/images/include -I../TouchGFX/generated/texts/include -I../TouchGFX/generated/videos/include -I../TouchGFX/gui/include -I"C:/TouchGFXProjects/UOSM-Dashboard-MCU-F769NI/Drivers/BSP/Components" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m7 -g3 -DDEBUG -c -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/TouchGFX" -I../Middlewares/ST/touchgfx/framework/include -I../TouchGFX/generated/fonts/include -I../TouchGFX/generated/gui_generated/include -I../TouchGFX/generated/images/include -I../TouchGFX/generated/texts/include -I../TouchGFX/generated/videos/include -I../TouchGFX/gui/include -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/Drivers/BSP/Components" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Drivers" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Inc" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Modules" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/Core/Tasks" -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Core-2f-Startup
 

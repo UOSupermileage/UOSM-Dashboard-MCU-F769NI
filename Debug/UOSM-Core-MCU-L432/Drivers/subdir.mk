@@ -5,23 +5,29 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Drivers/BSP/Components/ft6x06/ft6x06.c 
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c \
+../UOSM-Core-MCU-L432/Drivers/MCP2515.c \
+../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.c 
 
 C_DEPS += \
-./Drivers/BSP/Components/ft6x06/ft6x06.d 
+./UOSM-Core-MCU-L432/Drivers/CANDriver.d \
+./UOSM-Core-MCU-L432/Drivers/MCP2515.d \
+./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.d 
 
 OBJS += \
-./Drivers/BSP/Components/ft6x06/ft6x06.o 
+./UOSM-Core-MCU-L432/Drivers/CANDriver.o \
+./UOSM-Core-MCU-L432/Drivers/MCP2515.o \
+./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Drivers/BSP/Components/ft6x06/%.o Drivers/BSP/Components/ft6x06/%.su Drivers/BSP/Components/ft6x06/%.cyclo: ../Drivers/BSP/Components/ft6x06/%.c Drivers/BSP/Components/ft6x06/subdir.mk
+UOSM-Core-MCU-L432/Drivers/%.o UOSM-Core-MCU-L432/Drivers/%.su UOSM-Core-MCU-L432/Drivers/%.cyclo: ../UOSM-Core-MCU-L432/Drivers/%.c UOSM-Core-MCU-L432/Drivers/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F769xx -c -I../Core/Inc -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/CMSIS/Device/ST/STM32F7xx/Include -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Drivers/CMSIS/Include -I../TouchGFX/App -I../TouchGFX/target/generated -I../TouchGFX/target -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Utilities/JPEG -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Middlewares/Third_Party/FreeRTOS/Source/include -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 -I/Users/jeremy/STM32Cube/Repository/STM32Cube_FW_F7_V1.17.0/Middlewares/Third_Party/LibJPEG/include -I../Middlewares/ST/touchgfx/framework/include -I../TouchGFX/generated/fonts/include -I../TouchGFX/generated/gui_generated/include -I../TouchGFX/generated/images/include -I../TouchGFX/generated/texts/include -I../TouchGFX/generated/videos/include -I../TouchGFX/gui/include -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/TouchGFX" -I../Drivers/STM32F7xx_HAL_Driver/Inc -I../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy -I../Utilities/JPEG -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 -I../Drivers/CMSIS/Device/ST/STM32F7xx/Include -I../Drivers/CMSIS/Include -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/Drivers/BSP/Components" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Drivers" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Inc" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/UOSM-Core-MCU-L432/Modules" -I"/Users/jeremy/Projects/STM/UOSM-Dashboard-MCU-F769NI/Core/Tasks" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "$@"
 
-clean: clean-Drivers-2f-BSP-2f-Components-2f-ft6x06
+clean: clean-UOSM-2d-Core-2d-MCU-2d-L432-2f-Drivers
 
-clean-Drivers-2f-BSP-2f-Components-2f-ft6x06:
-	-$(RM) ./Drivers/BSP/Components/ft6x06/ft6x06.cyclo ./Drivers/BSP/Components/ft6x06/ft6x06.d ./Drivers/BSP/Components/ft6x06/ft6x06.o ./Drivers/BSP/Components/ft6x06/ft6x06.su
+clean-UOSM-2d-Core-2d-MCU-2d-L432-2f-Drivers:
+	-$(RM) ./UOSM-Core-MCU-L432/Drivers/CANDriver.cyclo ./UOSM-Core-MCU-L432/Drivers/CANDriver.d ./UOSM-Core-MCU-L432/Drivers/CANDriver.o ./UOSM-Core-MCU-L432/Drivers/CANDriver.su ./UOSM-Core-MCU-L432/Drivers/MCP2515.cyclo ./UOSM-Core-MCU-L432/Drivers/MCP2515.d ./UOSM-Core-MCU-L432/Drivers/MCP2515.o ./UOSM-Core-MCU-L432/Drivers/MCP2515.su ./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.cyclo ./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.d ./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.o ./UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.su
 
-.PHONY: clean-Drivers-2f-BSP-2f-Components-2f-ft6x06
+.PHONY: clean-UOSM-2d-Core-2d-MCU-2d-L432-2f-Drivers
 
