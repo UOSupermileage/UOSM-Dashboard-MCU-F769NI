@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.21.4">
   <Languages>
-    <Language Id="GB" />
+    <Language Id="FR" />
+    <Language Id="EN" />
   </Languages>
   <Texts>
-    <TextGroup Id="Group1" />
+    <TextGroup Id="Main">
+      <Text Id="title" Alignment="Left" TypographyId="Large">
+        <Translation Language="EN">Title</Translation>
+        <Translation Language="FR">Titre</Translation>
+      </Text>
+    </TextGroup>
+    <TextGroup Id="Unsorted">
+      <Text Id="ResourceId1" Alignment="Left" TypographyId="Large">
+        <Translation Language="FR">New Text</Translation>
+        <Translation Language="EN">New Text</Translation>
+      </Text>
+    </TextGroup>
   </Texts>
   <Typographies>
-    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" Direction="LTR" FallbackCharacter="?" WildcardCharacters="*" WildcardCharacterRanges="1" EllipsisCharacter="p" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" Direction="LTR" FallbackCharacter="?" />
   </Typographies>

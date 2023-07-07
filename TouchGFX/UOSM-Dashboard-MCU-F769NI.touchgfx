@@ -10,6 +10,17 @@
             "Width": 800,
             "Height": 480,
             "RelativeFilename": "__generated\\alternate_theme_images_backgrounds_800x480_poly.png"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea1",
+            "X": 285,
+            "Y": 125,
+            "Width": 92,
+            "Height": 49,
+            "TextId": "title",
+            "TextRotation": "0",
+            "AutoSize": true
           }
         ],
         "Interactions": []
@@ -23,13 +34,14 @@
     },
     "SelectedColorDepth": 16,
     "StartupScreenName": "screen",
-    "SelectedStartupLanguage": "GB",
+    "SelectedStartupLanguage": "FR",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",
     "UIPath": ".",
     "AvailableColorDepths": [
       16
     ],
     "AvailableLCDs": {
+      "24": "LCD24bpp",
       "16": "LCD16bpp"
     },
     "AvailableSections": [
@@ -54,6 +66,8 @@
     "PostGenerateTargetCommand": "touchgfx update_project",
     "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
     "RunSimulatorCommand": "build\\bin\\simulator.exe",
+    "CompileTargetCommandOverride": "make -f ../gcc/Makefile -j8",
+    "FlashTargetCommandOverride": "make -f ../gcc/Makefile flash",
     "LandscapeSkinX": 0,
     "LandscapeSkinY": 0,
     "PortraitSkinX": 0,
@@ -66,7 +80,10 @@
     "ProjectFile": "../UOSM-Dashboard-MCU-F769NI.ioc",
     "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
     "OptionalComponents": [],
-    "AdditionalFeatures": []
+    "AdditionalFeatures": [
+      "Vector"
+    ]
   },
-  "Version": "4.21.4"
+  "Version": "4.21.4",
+  "CreatedBy": "4.21.4"
 }

@@ -6,12 +6,15 @@
 
 enum LANGUAGES
 {
-    GB,
+    FR,
+    EN,
     NUMBER_OF_LANGUAGES
 };
 
 enum TEXTS
 {
+    T_TITLE,
+    T_RESOURCEID1,
     NUMBER_OF_TEXT_KEYS
 };
 
