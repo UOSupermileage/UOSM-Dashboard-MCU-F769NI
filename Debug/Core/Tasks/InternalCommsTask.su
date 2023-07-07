@@ -1,0 +1,2 @@
+../Core/Tasks/InternalCommsTask.c:29:13:InitInternalCommsTask	8	static
+../Core/Tasks/InternalCommsTask.c:34:14:InternalCommsTask	24	static

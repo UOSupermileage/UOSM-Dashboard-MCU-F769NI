@@ -1,0 +1,13 @@
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:26:6:CANSPI_Sleep	8	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:38:6:CANSPI_Initialize	40	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:139:9:CANSPI_Transmit	40	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:203:9:CANSPI_Receive	64	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:270:9:CANSPI_messagesInBuffer	16	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:290:9:CANSPI_isBussOff	16	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:305:16:CANSPI_isRxErrorPassive	16	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:320:16:CANSPI_isTxErrorPassive	16	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:335:17:convertReg2ExtendedCANid	32	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:357:17:convertReg2StandardCANid	24	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:370:13:convertCANid2Reg	32	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:406:17:readMsg	24	static
+../UOSM-Core-MCU-L432/Drivers/CANDriver.c:417:24:createMsg	40	static

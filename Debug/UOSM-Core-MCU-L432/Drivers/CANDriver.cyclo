@@ -1,0 +1,13 @@
+CANDriver.c:26:6:CANSPI_Sleep	1
+CANDriver.c:38:6:CANSPI_Initialize	4
+CANDriver.c:139:9:CANSPI_Transmit	6
+CANDriver.c:203:9:CANSPI_Receive	7
+CANDriver.c:270:9:CANSPI_messagesInBuffer	3
+CANDriver.c:290:9:CANSPI_isBussOff	2
+CANDriver.c:305:16:CANSPI_isRxErrorPassive	2
+CANDriver.c:320:16:CANSPI_isTxErrorPassive	2
+CANDriver.c:335:17:convertReg2ExtendedCANid	1
+CANDriver.c:357:17:convertReg2StandardCANid	1
+CANDriver.c:370:13:convertCANid2Reg	2
+CANDriver.c:406:17:readMsg	2
+CANDriver.c:417:24:createMsg	1

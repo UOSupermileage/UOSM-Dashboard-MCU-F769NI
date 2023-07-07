@@ -1,0 +1,4 @@
+../Core/Modules/CANCallbacks.c:6:6:ErrorDataCallback	16	static
+../Core/Modules/CANCallbacks.c:10:6:EventDataCallback	16	static
+../Core/Modules/CANCallbacks.c:14:6:MotorRPMDataCallback	24	static
+../Core/Modules/CANCallbacks.c:19:6:VoltageDataCallback	24	static

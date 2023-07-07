@@ -48,6 +48,7 @@ RM := rm -rf
 -include Core/Tasks/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Core/Modules/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

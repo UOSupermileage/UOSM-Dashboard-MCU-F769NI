@@ -41,5 +41,9 @@ PRIVATE void InternalCommsTask(void *argument) {
     osDelayUntil(cycleTick);
 
     IComms_PeriodicReceive();
+    DebugPrint("hi");
   }
+
+  uint8_t a[3];
+  uint8_t b = a[4];
 }

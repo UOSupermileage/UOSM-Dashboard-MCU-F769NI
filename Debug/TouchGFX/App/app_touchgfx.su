@@ -1,0 +1,4 @@
+../TouchGFX/App/app_touchgfx.c:59:6:MX_TouchGFX_PreOSInit	4	static
+../TouchGFX/App/app_touchgfx.c:66:6:MX_TouchGFX_Init	8	static
+../TouchGFX/App/app_touchgfx.c:76:6:MX_TouchGFX_Process	8	static
+../TouchGFX/App/app_touchgfx.c:85:6:TouchGFX_Task	16	static

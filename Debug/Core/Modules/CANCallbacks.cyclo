@@ -1,0 +1,4 @@
+CANCallbacks.c:6:6:ErrorDataCallback	1
+CANCallbacks.c:10:6:EventDataCallback	1
+CANCallbacks.c:14:6:MotorRPMDataCallback	1
+CANCallbacks.c:19:6:VoltageDataCallback	1

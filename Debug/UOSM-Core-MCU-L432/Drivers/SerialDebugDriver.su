@@ -1,0 +1,2 @@
+../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.c:13:6:SerialPrint	16	static
+../UOSM-Core-MCU-L432/Drivers/SerialDebugDriver.c:23:6:SerialPrintln	16	static

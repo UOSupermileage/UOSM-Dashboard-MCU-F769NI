@@ -1,0 +1,7 @@
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:34:13:ThrottleDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:35:13:ErrorDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:36:13:SpeedDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:37:13:EventDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:38:13:MotorRPMDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:39:13:VoltageDataCallback	16	static
+../UOSM-Core-MCU-L432/Modules/CANMessageLookUpModule.c:41:33:CANMessageLookUpGetInfo	16	static
