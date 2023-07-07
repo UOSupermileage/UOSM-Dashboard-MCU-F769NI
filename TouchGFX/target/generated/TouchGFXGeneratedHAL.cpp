@@ -20,6 +20,8 @@
 #include <touchgfx/hal/OSWrappers.hpp>
 #include <gui/common/FrontendHeap.hpp>
 
+#include <touchgfx/widgets/canvas/CWRVectorRenderer.hpp>
+
 #include <HardwareMJPEGDecoder.hpp>
 #include <DedicatedBufferVideoController.hpp>
 #include <jpeg_utils.h>
@@ -35,6 +37,16 @@ VideoController& VideoController::getInstance()
 {
     return videoController;
 }
+
+namespace touchgfx
+{
+VectorRenderer* VectorRenderer::getInstance()
+{
+    static CWRVectorRendererRGB565 renderer;
+
+    return &renderer;
+}
+} // namespace touchgfx
 
 #include "stm32f7xx.h"
 

@@ -463,7 +463,7 @@ void HAL_LTDC_MspInit(LTDC_HandleTypeDef* hltdc)
     /* Peripheral clock enable */
     __HAL_RCC_LTDC_CLK_ENABLE();
     /* LTDC interrupt Init */
-    HAL_NVIC_SetPriority(LTDC_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(LTDC_IRQn, 3, 0);
     HAL_NVIC_EnableIRQ(LTDC_IRQn);
   /* USER CODE BEGIN LTDC_MspInit 1 */
 

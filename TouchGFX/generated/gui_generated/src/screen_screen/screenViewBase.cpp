@@ -4,6 +4,7 @@
 #include <gui_generated/screen_screen/screenViewBase.hpp>
 #include <touchgfx/Color.hpp>
 #include <images/BitmapDatabase.hpp>
+#include <texts/TextKeysAndLanguages.hpp>
 
 screenViewBase::screenViewBase()
 {
@@ -14,6 +15,12 @@ screenViewBase::screenViewBase()
     image1.setXY(0, 0);
     image1.setBitmap(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_BACKGROUNDS_800X480_POLY_ID));
     add(image1);
+
+    textArea1.setXY(285, 125);
+    textArea1.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    textArea1.setLinespacing(0);
+    textArea1.setTypedText(touchgfx::TypedText(T_TITLE));
+    add(textArea1);
 }
 
 screenViewBase::~screenViewBase()

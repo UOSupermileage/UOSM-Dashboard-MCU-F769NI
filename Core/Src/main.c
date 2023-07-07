@@ -6,12 +6,13 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
+  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -19,12 +20,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "libjpeg.h"
 #include "app_touchgfx.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "mx25l512/mx25l512.h"
+#include "otm8009a/otm8009a.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,6 +36,29 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define REFRESH_COUNT        1834
+#define SDRAM_TIMEOUT                            ((uint32_t)0xFFFF)
+#define SDRAM_MODEREG_BURST_LENGTH_1             ((uint16_t)0x0000)
+#define SDRAM_MODEREG_BURST_LENGTH_2             ((uint16_t)0x0001)
+#define SDRAM_MODEREG_BURST_LENGTH_4             ((uint16_t)0x0002)
+#define SDRAM_MODEREG_BURST_LENGTH_8             ((uint16_t)0x0004)
+#define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL      ((uint16_t)0x0000)
+#define SDRAM_MODEREG_BURST_TYPE_INTERLEAVED     ((uint16_t)0x0008)
+#define SDRAM_MODEREG_CAS_LATENCY_2              ((uint16_t)0x0020)
+#define SDRAM_MODEREG_CAS_LATENCY_3              ((uint16_t)0x0030)
+#define SDRAM_MODEREG_OPERATING_MODE_STANDARD    ((uint16_t)0x0000)
+#define SDRAM_MODEREG_WRITEBURST_MODE_PROGRAMMED ((uint16_t)0x0000)
+#define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE     ((uint16_t)0x0200)
+
+/* QSPI Error codes */
+#define QSPI_OK            ((uint8_t)0x00)
+#define QSPI_ERROR         ((uint8_t)0x01)
+#define QSPI_BUSY          ((uint8_t)0x02)
+#define QSPI_NOT_SUPPORTED ((uint8_t)0x04)
+#define QSPI_SUSPENDED     ((uint8_t)0x08)
+
+/* DISPLAY */
+#define LCD_ORIENTATION_LANDSCAPE 0x01
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -91,23 +115,32 @@ const osThreadAttr_t videoTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
-static void MX_JPEG_Init(void);
+static void MX_DSIHOST_DSI_Init(void);
 static void MX_LTDC_Init(void);
-static void MX_SPI1_Init(void);
+static void MX_FMC_Init(void);
+static void MX_QUADSPI_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_CRC_Init(void);
-static void MX_FMC_Init(void);
-static void MX_I2C4_Init(void);
-static void MX_QUADSPI_Init(void);
-static void MX_DSIHOST_DSI_Init(void);
+static void MX_JPEG_Init(void);
+static void MX_SPI1_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 extern void videoTaskFunc(void *argument);
 
 /* USER CODE BEGIN PFP */
+static void BSP_SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command);
 
+static uint8_t QSPI_ResetMemory(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_EnterMemory_QPI(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_EnterFourBytesAddress(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_DummyCyclesCfg(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_OutDrvStrengthCfg(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_WriteEnable(QSPI_HandleTypeDef *hqspi);
+static uint8_t QSPI_AutoPollingMemReady  (QSPI_HandleTypeDef *hqspi, uint32_t Timeout);
+static uint8_t BSP_QSPI_EnableMemoryMappedMode(QSPI_HandleTypeDef *hqspi);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -124,6 +157,9 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
+
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -144,16 +180,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_JPEG_Init();
-  MX_LTDC_Init();
-  MX_SPI1_Init();
-  MX_DMA2D_Init();
-  MX_CRC_Init();
-  MX_FMC_Init();
-  MX_I2C4_Init();
-  MX_QUADSPI_Init();
   MX_DSIHOST_DSI_Init();
-  MX_LIBJPEG_Init();
+  MX_LTDC_Init();
+  MX_FMC_Init();
+  MX_QUADSPI_Init();
+  MX_DMA2D_Init();
+  MX_I2C4_Init();
+  MX_CRC_Init();
+  MX_JPEG_Init();
+  MX_SPI1_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -344,7 +379,13 @@ static void MX_DSIHOST_DSI_Init(void)
 {
 
   /* USER CODE BEGIN DSIHOST_Init 0 */
-
+  /* Activate XRES active low */
+  HAL_GPIO_WritePin(DSI_RESET_GPIO_Port, DSI_RESET_Pin, GPIO_PIN_RESET);
+  HAL_Delay(20); /* wait 20 ms */
+  /* Desactivate XRES */
+  HAL_GPIO_WritePin(DSI_RESET_GPIO_Port, DSI_RESET_Pin, GPIO_PIN_SET);
+  /* Wait for 10ms after releasing XRES before sending commands */
+  HAL_Delay(10);
   /* USER CODE END DSIHOST_Init 0 */
 
   DSI_PLLInitTypeDef PLLInit = {0};
@@ -449,7 +490,7 @@ static void MX_DSIHOST_DSI_Init(void)
   * @param None
   * @retval None
   */
-static void MX_I2C4_Init(void)
+void MX_I2C4_Init(void)
 {
 
   /* USER CODE BEGIN I2C4_Init 0 */
@@ -575,6 +616,47 @@ static void MX_LTDC_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN LTDC_Init 2 */
+  __HAL_LTDC_DISABLE(&hltdc);
+  DSI_LPCmdTypeDef LPCmd;
+
+  HAL_DSI_Start(&hdsi);
+  OTM8009A_Init(OTM8009A_FORMAT_RBG565, LCD_ORIENTATION_LANDSCAPE);
+
+  HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, OTM8009A_CMD_DISPOFF, 0x00);
+
+  LPCmd.LPGenShortWriteNoP = DSI_LP_GSW0P_DISABLE;
+  LPCmd.LPGenShortWriteOneP = DSI_LP_GSW1P_DISABLE;
+  LPCmd.LPGenShortWriteTwoP = DSI_LP_GSW2P_DISABLE;
+  LPCmd.LPGenShortReadNoP = DSI_LP_GSR0P_DISABLE;
+  LPCmd.LPGenShortReadOneP = DSI_LP_GSR1P_DISABLE;
+  LPCmd.LPGenShortReadTwoP = DSI_LP_GSR2P_DISABLE;
+  LPCmd.LPGenLongWrite = DSI_LP_GLW_DISABLE;
+  LPCmd.LPDcsShortWriteNoP = DSI_LP_DSW0P_DISABLE;
+  LPCmd.LPDcsShortWriteOneP = DSI_LP_DSW1P_DISABLE;
+  LPCmd.LPDcsShortReadNoP = DSI_LP_DSR0P_DISABLE;
+  LPCmd.LPDcsLongWrite = DSI_LP_DLW_DISABLE;
+  HAL_DSI_ConfigCommand(&hdsi, &LPCmd);
+
+  HAL_LTDC_SetPitch(&hltdc, 800, 0);
+  __HAL_LTDC_ENABLE(&hltdc);
+
+  // LPCmd.LPGenShortWriteNoP = DSI_LP_GSW0P_DISABLE;
+  // LPCmd.LPGenShortWriteOneP = DSI_LP_GSW1P_DISABLE;
+  // LPCmd.LPGenShortWriteTwoP = DSI_LP_GSW2P_DISABLE;
+  // LPCmd.LPGenShortReadNoP = DSI_LP_GSR0P_DISABLE;
+  // LPCmd.LPGenShortReadOneP = DSI_LP_GSR1P_DISABLE;
+  // LPCmd.LPGenShortReadTwoP = DSI_LP_GSR2P_DISABLE;
+  // LPCmd.LPGenLongWrite = DSI_LP_GLW_DISABLE;
+  // LPCmd.LPDcsShortWriteNoP = DSI_LP_DSW0P_DISABLE;
+  // LPCmd.LPDcsShortWriteOneP = DSI_LP_DSW1P_DISABLE;
+  // LPCmd.LPDcsShortReadNoP = DSI_LP_DSR0P_DISABLE;
+  // LPCmd.LPDcsLongWrite = DSI_LP_DLW_DISABLE;
+  // HAL_DSI_ConfigCommand(&hdsi, &LPCmd);
+
+  // HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, OTM8009A_CMD_DISPOFF, 0x00);
+
+  // HAL_LTDC_SetPitch(&hltdc, 800, 0);
+  // __HAL_LTDC_ENABLE(&hltdc);
 
   /* USER CODE END LTDC_Init 2 */
 
@@ -610,6 +692,40 @@ static void MX_QUADSPI_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN QUADSPI_Init 2 */
+  /* QSPI memory reset */
+  if (QSPI_ResetMemory(&hqspi) != QSPI_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Put QSPI memory in QPI mode */
+  if( QSPI_EnterMemory_QPI( &hqspi )!=QSPI_OK )
+  {
+    Error_Handler();
+  }
+
+  /* Set the QSPI memory in 4-bytes address mode */
+  if (QSPI_EnterFourBytesAddress(&hqspi) != QSPI_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Configuration of the dummy cycles on QSPI memory side */
+  if (QSPI_DummyCyclesCfg(&hqspi) != QSPI_OK)
+  {
+    Error_Handler();
+  }
+
+  /* Configuration of the Output driver strength on memory side */
+  if( QSPI_OutDrvStrengthCfg( &hqspi ) != QSPI_OK )
+  {
+    Error_Handler();
+  }
+
+  if( BSP_QSPI_EnableMemoryMappedMode(&hqspi) != QSPI_OK )
+  {
+    Error_Handler();
+  }
 
   /* USER CODE END QUADSPI_Init 2 */
 
@@ -634,7 +750,7 @@ static void MX_SPI1_Init(void)
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.DataSize = SPI_DATASIZE_4BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
@@ -718,6 +834,13 @@ static void MX_FMC_Init(void)
 
   /* USER CODE BEGIN FMC_Init 2 */
 
+  FMC_SDRAM_CommandTypeDef command;
+
+  /* Program the SDRAM external device */
+  BSP_SDRAM_Initialization_Sequence(&hsdram1, &command);
+
+  //Deactivate speculative/cache access to first FMC Bank to save FMC bandwidth
+  FMC_Bank1->BTCR[0] = 0x000030D2;
   /* USER CODE END FMC_Init 2 */
 }
 
@@ -728,6 +851,7 @@ static void MX_FMC_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
@@ -735,18 +859,691 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
+  __HAL_RCC_GPIOJ_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOJ_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(CAN_CS_GPIO_Port, CAN_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_13|FRAME_RATE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DSI_RESET_GPIO_Port, DSI_RESET_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, RENDER_TIME_Pin|VSYNC_FREQ_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MCU_ACTIVE_GPIO_Port, MCU_ACTIVE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : CAN_CS_Pin */
+  GPIO_InitStruct.Pin = CAN_CS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(CAN_CS_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PJ13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : DSI_RESET_Pin */
+  GPIO_InitStruct.Pin = DSI_RESET_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(DSI_RESET_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : RENDER_TIME_Pin VSYNC_FREQ_Pin */
+  GPIO_InitStruct.Pin = RENDER_TIME_Pin|VSYNC_FREQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MCU_ACTIVE_Pin */
+  GPIO_InitStruct.Pin = MCU_ACTIVE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(MCU_ACTIVE_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : FRAME_RATE_Pin */
+  GPIO_InitStruct.Pin = FRAME_RATE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(FRAME_RATE_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  Perform the SDRAM external memory initialization sequence
+  * @param  hsdram: SDRAM handle
+  * @param  Command: Pointer to SDRAM command structure
+  * @retval None
+  */
+static void BSP_SDRAM_Initialization_Sequence(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_CommandTypeDef *Command)
+{
+ __IO uint32_t tmpmrd = 0;
+
+    /* Step 1: Configure a clock configuration enable command */
+    Command->CommandMode            = FMC_SDRAM_CMD_CLK_ENABLE;
+    Command->CommandTarget          =  FMC_SDRAM_CMD_TARGET_BANK1;
+    Command->AutoRefreshNumber      = 1;
+    Command->ModeRegisterDefinition = 0;
+
+    /* Send the command */
+    HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);
+
+    /* Step 2: Insert 100 us minimum delay */
+    /* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
+    HAL_Delay(1);
+
+    /* Step 3: Configure a PALL (precharge all) command */
+    Command->CommandMode            = FMC_SDRAM_CMD_PALL;
+    Command->CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+    Command->AutoRefreshNumber      = 1;
+    Command->ModeRegisterDefinition = 0;
+
+    /* Send the command */
+    HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);
+
+    /* Step 4: Configure an Auto Refresh command */
+    Command->CommandMode            = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
+    Command->CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+    Command->AutoRefreshNumber      = 8;
+    Command->ModeRegisterDefinition = 0;
+
+    /* Send the command */
+    HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);
+
+    /* Step 5: Program the external memory mode register */
+    tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          | \
+             SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   | \
+             SDRAM_MODEREG_CAS_LATENCY_3           | \
+             SDRAM_MODEREG_OPERATING_MODE_STANDARD | \
+             SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
+
+    Command->CommandMode            = FMC_SDRAM_CMD_LOAD_MODE;
+    Command->CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
+    Command->AutoRefreshNumber      = 1;
+    Command->ModeRegisterDefinition = tmpmrd;
+
+    /* Send the command */
+    HAL_SDRAM_SendCommand(hsdram, Command, SDRAM_TIMEOUT);
+
+    /* Step 6: Set the refresh rate counter */
+    /* Set the device refresh rate */
+    HAL_SDRAM_ProgramRefreshRate(hsdram, REFRESH_COUNT);
+
+}
+
+/**
+  * @brief  This function reset the QSPI memory.
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_ResetMemory(QSPI_HandleTypeDef *hqspi)
+{
+  QSPI_CommandTypeDef      s_command;
+  QSPI_AutoPollingTypeDef  s_config;
+  uint8_t                  reg;
+
+  /* Send command RESET command in QPI mode (QUAD I/Os) */
+  /* Initialize the reset enable command */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = RESET_ENABLE_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_NONE;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+  /* Send the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+  /* Send the reset memory command */
+  s_command.Instruction = RESET_MEMORY_CMD;
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Send command RESET command in SPI mode */
+  /* Initialize the reset enable command */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction       = RESET_ENABLE_CMD;
+  /* Send the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+  /* Send the reset memory command */
+  s_command.Instruction = RESET_MEMORY_CMD;
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* After reset CMD, 1000ms requested if QSPI memory SWReset occured during full chip erase operation */
+  HAL_Delay( 1000 );
+
+  /* Configure automatic polling mode to wait the WIP bit=0 */
+  s_config.Match           = 0;
+  s_config.Mask            = MX25L512_SR_WIP;
+  s_config.MatchMode       = QSPI_MATCH_MODE_AND;
+  s_config.StatusBytesSize = 1;
+  s_config.Interval        = 0x10;
+  s_config.AutomaticStop   = QSPI_AUTOMATIC_STOP_ENABLE;
+
+  s_command.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction     = READ_STATUS_REG_CMD;
+  s_command.DataMode        = QSPI_DATA_1_LINE;
+
+  if (HAL_QSPI_AutoPolling(hqspi, &s_command, &s_config, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Initialize the reading of status register */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction       = READ_STATUS_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_1_LINE;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Reception of the data */
+  if (HAL_QSPI_Receive(hqspi, &reg, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Enable write operations, command in 1 bit */
+  /* Enable write operations */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction       = WRITE_ENABLE_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_NONE;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Configure automatic polling mode to wait for write enabling */
+  s_config.Match           = MX25L512_SR_WREN;
+  s_config.Mask            = MX25L512_SR_WREN;
+  s_config.MatchMode       = QSPI_MATCH_MODE_AND;
+  s_config.StatusBytesSize = 1;
+  s_config.Interval        = 0x10;
+  s_config.AutomaticStop   = QSPI_AUTOMATIC_STOP_ENABLE;
+
+  s_command.Instruction    = READ_STATUS_REG_CMD;
+  s_command.DataMode       = QSPI_DATA_1_LINE;
+
+  if (HAL_QSPI_AutoPolling(hqspi, &s_command, &s_config, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Update the configuration register with new dummy cycles */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction       = WRITE_STATUS_CFG_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_1_LINE;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Enable the Quad IO on the QSPI memory (Non-volatile bit) */
+  reg |= MX25L512_SR_QUADEN;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Transmission of the data */
+  if (HAL_QSPI_Transmit(hqspi, &reg, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* 40ms  Write Status/Configuration Register Cycle Time */
+  HAL_Delay( 40 );
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function put QSPI memory in QPI mode (quad I/O).
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_EnterMemory_QPI( QSPI_HandleTypeDef *hqspi )
+{
+  QSPI_CommandTypeDef      s_command;
+  QSPI_AutoPollingTypeDef  s_config;
+
+  /* Initialize the QPI enable command */
+  /* QSPI memory is supported to be in SPI mode, so CMD on 1 LINE */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
+  s_command.Instruction       = ENTER_QUAD_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_NONE;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Send the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Configure automatic polling mode to wait the QUADEN bit=1 and WIP bit=0 */
+  s_config.Match           = MX25L512_SR_QUADEN;
+  s_config.Mask            = MX25L512_SR_QUADEN|MX25L512_SR_WIP;
+  s_config.MatchMode       = QSPI_MATCH_MODE_AND;
+  s_config.StatusBytesSize = 1;
+  s_config.Interval        = 0x10;
+  s_config.AutomaticStop   = QSPI_AUTOMATIC_STOP_ENABLE;
+
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_STATUS_REG_CMD;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+
+  if (HAL_QSPI_AutoPolling(hqspi, &s_command, &s_config, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function set the QSPI memory in 4-byte address mode
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_EnterFourBytesAddress(QSPI_HandleTypeDef *hqspi)
+{
+  QSPI_CommandTypeDef s_command;
+
+  /* Initialize the command */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = ENTER_4_BYTE_ADDR_MODE_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_NONE;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Enable write operations */
+  if (QSPI_WriteEnable(hqspi) != QSPI_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Send the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Configure automatic polling mode to wait the memory is ready */
+  if (QSPI_AutoPollingMemReady(hqspi, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != QSPI_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function configure the dummy cycles on memory side.
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_DummyCyclesCfg(QSPI_HandleTypeDef *hqspi)
+{
+  QSPI_CommandTypeDef s_command;
+  uint8_t reg[2];
+
+  /* Initialize the reading of status register */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_STATUS_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Reception of the data */
+  if (HAL_QSPI_Receive(hqspi, &(reg[0]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Initialize the reading of configuration register */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_CFG_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Reception of the data */
+  if (HAL_QSPI_Receive(hqspi, &(reg[1]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Enable write operations */
+  if (QSPI_WriteEnable(hqspi) != QSPI_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Update the configuration register with new dummy cycles */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = WRITE_STATUS_CFG_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 2;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* MX25L512_DUMMY_CYCLES_READ_QUAD = 3 for 10 cycles in QPI mode */
+  MODIFY_REG( reg[1], MX25L512_CR_NB_DUMMY, (MX25L512_DUMMY_CYCLES_READ_QUAD << POSITION_VAL(MX25L512_CR_NB_DUMMY)));
+
+  /* Configure the write volatile configuration register command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Transmission of the data */
+  if (HAL_QSPI_Transmit(hqspi, &(reg[0]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* 40ms  Write Status/Configuration Register Cycle Time */
+  HAL_Delay( 40 );
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function configure the Output driver strength on memory side.
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_OutDrvStrengthCfg( QSPI_HandleTypeDef *hqspi )
+{
+  QSPI_CommandTypeDef s_command;
+  uint8_t reg[2];
+
+  /* Initialize the reading of status register */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_STATUS_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Reception of the data */
+  if (HAL_QSPI_Receive(hqspi, &(reg[0]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Initialize the reading of configuration register */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_CFG_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 1;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Reception of the data */
+  if (HAL_QSPI_Receive(hqspi, &(reg[1]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Enable write operations */
+  if (QSPI_WriteEnable(hqspi) != QSPI_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Update the configuration register with new output driver strength */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = WRITE_STATUS_CFG_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.NbData            = 2;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Set Output Strength of the QSPI memory 15 ohms */
+  MODIFY_REG( reg[1], MX25L512_CR_ODS, (MX25L512_CR_ODS_15 << POSITION_VAL(MX25L512_CR_ODS)));
+
+  /* Configure the write volatile configuration register command */
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Transmission of the data */
+  if (HAL_QSPI_Transmit(hqspi, &(reg[0]), HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function send a Write Enable and wait it is effective.
+  * @param  hqspi: QSPI handle
+  * @retval None
+  */
+static uint8_t QSPI_WriteEnable(QSPI_HandleTypeDef *hqspi)
+{
+  QSPI_CommandTypeDef     s_command;
+  QSPI_AutoPollingTypeDef s_config;
+
+  /* Enable write operations */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = WRITE_ENABLE_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_NONE;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  if (HAL_QSPI_Command(hqspi, &s_command, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  /* Configure automatic polling mode to wait for write enabling */
+  s_config.Match           = MX25L512_SR_WREN;
+  s_config.Mask            = MX25L512_SR_WREN;
+  s_config.MatchMode       = QSPI_MATCH_MODE_AND;
+  s_config.StatusBytesSize = 1;
+  s_config.Interval        = 0x10;
+  s_config.AutomaticStop   = QSPI_AUTOMATIC_STOP_ENABLE;
+
+  s_command.Instruction    = READ_STATUS_REG_CMD;
+  s_command.DataMode       = QSPI_DATA_4_LINES;
+
+  if (HAL_QSPI_AutoPolling(hqspi, &s_command, &s_config, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  This function read the SR of the memory and wait the EOP.
+  * @param  hqspi: QSPI handle
+  * @param  Timeout
+  * @retval None
+  */
+static uint8_t QSPI_AutoPollingMemReady(QSPI_HandleTypeDef *hqspi, uint32_t Timeout)
+{
+  QSPI_CommandTypeDef     s_command;
+  QSPI_AutoPollingTypeDef s_config;
+
+  /* Configure automatic polling mode to wait for memory ready */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = READ_STATUS_REG_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_NONE;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = 0;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  s_config.Match           = 0;
+  s_config.Mask            = MX25L512_SR_WIP;
+  s_config.MatchMode       = QSPI_MATCH_MODE_AND;
+  s_config.StatusBytesSize = 1;
+  s_config.Interval        = 0x10;
+  s_config.AutomaticStop   = QSPI_AUTOMATIC_STOP_ENABLE;
+
+  if (HAL_QSPI_AutoPolling(hqspi, &s_command, &s_config, Timeout) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
+
+/**
+  * @brief  Configure the QSPI in memory-mapped mode
+  * @retval QSPI memory status
+  */
+static uint8_t BSP_QSPI_EnableMemoryMappedMode(QSPI_HandleTypeDef *hqspi)
+{
+  QSPI_CommandTypeDef      s_command;
+  QSPI_MemoryMappedTypeDef s_mem_mapped_cfg;
+
+  /* Configure the command for the read instruction */
+  s_command.InstructionMode   = QSPI_INSTRUCTION_4_LINES;
+  s_command.Instruction       = QPI_READ_4_BYTE_ADDR_CMD;
+  s_command.AddressMode       = QSPI_ADDRESS_4_LINES;
+  s_command.AddressSize       = QSPI_ADDRESS_32_BITS;
+  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+  s_command.DataMode          = QSPI_DATA_4_LINES;
+  s_command.DummyCycles       = MX25L512_DUMMY_CYCLES_READ_QUAD_IO;
+  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
+  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
+  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+
+  /* Configure the memory mapped mode */
+  s_mem_mapped_cfg.TimeOutActivation = QSPI_TIMEOUT_COUNTER_DISABLE;
+  s_mem_mapped_cfg.TimeOutPeriod     = 0;
+
+  if (HAL_QSPI_MemoryMapped(hqspi, &s_command, &s_mem_mapped_cfg) != HAL_OK)
+  {
+    return QSPI_ERROR;
+  }
+
+  return QSPI_OK;
+}
 
 /* USER CODE END 4 */
 
@@ -760,12 +1557,82 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END 5 */
+}
+
+/* MPU Configuration */
+
+void MPU_Config(void)
+{
+  MPU_Region_InitTypeDef MPU_InitStruct = {0};
+
+  /* Disables the MPU */
+  HAL_MPU_Disable();
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress = 0x20000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_512KB;
+  MPU_InitStruct.SubRegionDisable = 0x0;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress = 0x90000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_512MB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER2;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_64MB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER3;
+  MPU_InitStruct.BaseAddress = 0xC0000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_512MB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /** Initializes and configures the Region and the memory to be protected
+  */
+  MPU_InitStruct.Number = MPU_REGION_NUMBER4;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_16MB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  /* Enables the MPU */
+  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
 }
 
 /**
@@ -797,10 +1664,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -816,7 +1680,7 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

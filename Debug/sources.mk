@@ -34,11 +34,28 @@ CPP_DEPS :=
 SUBDIRS := \
 Core/Src \
 Core/Startup \
-Drivers/STM32F7xx_HAL_Driver \
-LIBJPEG/App \
-Middlewares/FreeRTOS \
-Middlewares/LibJPEG \
+Drivers/BSP/Components/ft6x06 \
+Drivers/BSP/Components/otm8009a \
+Drivers/STM32F7xx_HAL_Driver/Src \
+Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
+Middlewares/Third_Party/FreeRTOS/Source \
+Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 \
+Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
 TouchGFX/App \
+TouchGFX/build/MINGW32_NT-6.2/generated/fonts/src \
+TouchGFX/build/MINGW32_NT-6.2/generated/gui_generated/src/common \
+TouchGFX/build/MINGW32_NT-6.2/generated/gui_generated/src/screen_screen \
+TouchGFX/build/MINGW32_NT-6.2/generated/images/src \
+TouchGFX/build/MINGW32_NT-6.2/generated/images/src/__generated \
+TouchGFX/build/MINGW32_NT-6.2/generated/simulator/src \
+TouchGFX/build/MINGW32_NT-6.2/generated/simulator/src/video \
+TouchGFX/build/MINGW32_NT-6.2/generated/texts/src \
+TouchGFX/build/MINGW32_NT-6.2/gui/src/common \
+TouchGFX/build/MINGW32_NT-6.2/gui/src/model \
+TouchGFX/build/MINGW32_NT-6.2/gui/src/screen_screen \
+TouchGFX/build/MINGW32_NT-6.2/simulator \
+TouchGFX/build/MINGW32_NT-6.2/touchgfx/framework/source/platform/driver/touch \
+TouchGFX/build/MINGW32_NT-6.2/touchgfx/framework/source/platform/hal/simulator/sdl2 \
 TouchGFX/generated/fonts/src \
 TouchGFX/generated/gui_generated/src/common \
 TouchGFX/generated/gui_generated/src/screen_screen \
@@ -50,5 +67,5 @@ TouchGFX/gui/src/model \
 TouchGFX/gui/src/screen_screen \
 TouchGFX/target \
 TouchGFX/target/generated \
-Utilities \
+Utilities/JPEG \
 
